@@ -1,0 +1,27 @@
+#!/bin/sh
+
+set -e
+
+DIR_NAME=$(dirname "$0")/..
+
+BIN_GOOSE=$DIR_NAME/bin/goose
+
+if [ ! -f "$BIN_GOOSE" ];
+then
+  echo "Missing goose binary, installing..."
+  "$DIR_NAME"/bin/install-goose
+fi
+
+if [ -z "${DATABASE_URL+x}" ];
+then
+  echo "Missing env variable DATABASE_URL"
+
+  exit 1
+fi
+
+export GOOSE_DRIVER="postgres"
+export GOOSE_DBSTRING=$DATABASE_URL
+
+echo "Running migrate command..."
+
+$BIN_GOOSE -dir "$DIR_NAME"/database/migrations up
