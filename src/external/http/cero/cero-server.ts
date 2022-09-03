@@ -6,6 +6,7 @@ import { Container, inject, injectable } from "inversify";
 import low from "low-http-server";
 
 import { Config } from "@/config/config";
+import * as apiDocs from "@/external/http/cero/api-docs";
 import { CeroHandler } from "@/external/http/cero/interfaces/cero-handler";
 import { CeroRequest } from "@/external/http/cero/interfaces/cero-request";
 import { CeroResponse } from "@/external/http/cero/interfaces/cero-response";
@@ -88,13 +89,12 @@ export class CeroServer extends BaseServer implements Server {
   }
 
   private configureRoutes(): void {
-    this.router.use(
-      "/",
-      cors({
-        optionsSuccessStatus: 200,
-      }),
-    );
+    this.router.use("/", cors({ optionsSuccessStatus: 200 }));
+    this.router.get("/api-docs", apiDocs.serve);
+    this.router.get("/api-docs/docs.json", apiDocs.serveDocs);
+    this.router.use("/api-docs/static/:file", apiDocs.serveStatic);
     this.router.use("/", bodyParser.json());
+
     for (const route of this.routes) {
       this.router.add(
         route.method,
