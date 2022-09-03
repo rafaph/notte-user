@@ -5,8 +5,8 @@ module.exports = {
   extension: [".ts"],
   include: ["src/**/*.ts"],
   reporter: ["text", "html"],
-  statements: 75,
-  branches: 56,
-  functions: 62,
-  lines: 74,
+  statements: 97,
+  branches: 83,
+  functions: 100,
+  lines: 97,
 };

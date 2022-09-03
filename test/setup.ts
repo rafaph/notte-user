@@ -12,3 +12,5 @@ use(chaiDateTime);
 use(sinonChai);
 use(chaiArrays);
 use(chaiSubset);
+
+process.env.NODE_ENV = "test";

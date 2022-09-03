@@ -7,7 +7,7 @@ import { Response } from "@/infra/http/interfaces/response";
 export class StatusController extends Controller {
   public async handle(): Promise<Response> {
     return Response.ok({
-      message: "OK",
+      status: "OK",
     });
   }
 }

@@ -22,7 +22,6 @@ export class TestServer {
       cwd: path.join(__dirname, "..", ".."),
       detached: true,
       killSignal: "SIGTERM",
-      stdio: "inherit",
     });
 
     if (typeof childProcess.pid === "undefined") {
@@ -54,7 +53,7 @@ export class TestServer {
   }
 
   public async up() {
-    this.port = await getPort();
+    this.port = await getPort({ random: true });
     this.start();
     await this.awaitStatus((status) => {
       if (status !== httpStatus.OK) {

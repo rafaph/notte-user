@@ -18,9 +18,7 @@ export class ValidatorMiddleware implements Middleware {
     const result = safeParse(this.schema, request[this.requestKey]);
 
     if (!result.success) {
-      return Response.badRequest({
-        errors: result.error.errors,
-      });
+      return Response.badRequest(result.error.detail);
     }
 
     return Response.ok(result.data);

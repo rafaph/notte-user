@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import axios from "axios";
 import httpStatus from "http-status";
+import parallel from "mocha.parallel";
 
 import { makeUser } from "@test/domain/factories/make-user";
 import { TestApp } from "@test/helpers/test-app";
@@ -13,7 +14,7 @@ const makeUrl = (address: string) => `${address}${endpoint}`;
 const makeRequest = <T = { id: string }>(address: string, body: unknown) =>
   axios.post<T>(makeUrl(address), body, { validateStatus: null });
 
-describe(`POST ${endpoint} @integration`, () => {
+parallel(`POST ${endpoint} @integration`, () => {
   it("should return an user id when created successfully", async () => {
     await new TestApp().run(async (address, pool) => {
       // given
