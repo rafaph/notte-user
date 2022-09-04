@@ -1,7 +1,6 @@
 import { Result } from "oxide.ts";
 
 import { Entity } from "@/domain/entities/entity";
-import { Note } from "@/domain/entities/note";
 import { InvalidEntityError } from "@/domain/errors/invalid-entity-error";
 import { v } from "@/lib/validator";
 
@@ -22,7 +21,6 @@ export class User extends Entity {
   public readonly password!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
-  public notes: Note[] = [];
 
   public static create(props: UserProps): Result<User, InvalidEntityError> {
     return this.createEntity<User>(UserSchema, props);

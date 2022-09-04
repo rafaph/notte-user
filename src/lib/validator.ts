@@ -38,7 +38,7 @@ export class ValidatorError<T = any> extends ZodError<T> {
       }
 
       let currentError: ErrorDetail = {};
-
+      /* istanbul ignore if */
       if (errorDetail[issue.path[0]]) {
         currentError = errorDetail[issue.path[0]] as ErrorDetail;
       } else {
@@ -48,6 +48,7 @@ export class ValidatorError<T = any> extends ZodError<T> {
       const paths = issue.path.slice(1);
 
       paths.forEach((path, index) => {
+        /* istanbul ignore else */
         if (index === size - 2) {
           currentError[path] = issue.message;
         } else {

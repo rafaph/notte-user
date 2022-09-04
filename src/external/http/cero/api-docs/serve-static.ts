@@ -74,6 +74,7 @@ const whiteFileMap: WhiteFileMap = {
   },
 };
 
+/* istanbul ignore next */
 export const serveStatic: CeroHandler = async (req, res) => {
   const { file } = req.params;
   const fileData = whiteFileMap[file];

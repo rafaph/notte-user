@@ -47,10 +47,12 @@ export class CeroServer extends BaseServer implements Server {
 
   protected send(ceroResponse: CeroResponse, response: Response): void {
     for (const [header, value] of Object.entries(response.headers ?? {})) {
+      /* istanbul ignore next */
       ceroResponse.setHeader(header, value);
     }
     ceroResponse.setHeader("Content-Type", "application/json");
     ceroResponse.writeHead(response.status);
+    /* istanbul ignore next */
     ceroResponse.end(response.body ? JSON.stringify(response.body) : undefined);
   }
 
@@ -63,6 +65,7 @@ export class CeroServer extends BaseServer implements Server {
         if (response.status !== httpStatus.OK) {
           this.send(ceroResponse, response);
         } else {
+          /* istanbul ignore next */
           Object.assign(ceroRequest.body as object, response.body ?? {});
           Object.assign(ceroRequest.headers, response.headers ?? {});
           next();
@@ -75,11 +78,13 @@ export class CeroServer extends BaseServer implements Server {
     return async (ceroRequest, ceroResponse) => {
       const request = this.createRequest(ceroRequest);
       const onStart = controller.onStart();
+      /* istanbul ignore if */
       if (onStart instanceof Promise) {
         await onStart;
       }
       const response = await controller.handle(request);
       const onEnd = controller.onEnd();
+      /* istanbul ignore if */
       if (onEnd instanceof Promise) {
         await onEnd;
       }
@@ -113,6 +118,7 @@ export class CeroServer extends BaseServer implements Server {
 
     return new Promise((resolve, reject) => {
       this.server.listen(host, port, (socket) => {
+        /* istanbul ignore else */
         if (socket) {
           Logger.info(`Server is now listening on ${address}`);
           this.listening = true;
@@ -127,6 +133,7 @@ export class CeroServer extends BaseServer implements Server {
   }
 
   public close(): void {
+    /* istanbul ignore else */
     if (this.listening) {
       this.server.close();
       this.listening = false;
