@@ -1,4 +1,10 @@
-import { BAD_REQUEST, CREATED, UNPROCESSABLE_ENTITY, OK } from "http-status";
+import {
+  BAD_REQUEST,
+  CREATED,
+  UNPROCESSABLE_ENTITY,
+  OK,
+  NOT_FOUND,
+} from "http-status";
 
 export abstract class Response<Body = unknown> {
   public headers?: Record<string, string>;
@@ -31,6 +37,13 @@ export abstract class Response<Body = unknown> {
   public static ok<Body = unknown>(body?: Body): Response<Body> {
     return {
       status: OK,
+      body,
+    };
+  }
+
+  public static notFound<Body = unknown>(body?: Body): Response<Body> {
+    return {
+      status: NOT_FOUND,
       body,
     };
   }

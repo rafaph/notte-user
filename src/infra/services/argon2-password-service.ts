@@ -12,7 +12,7 @@ export class Argon2PasswordService
     return argon2.hash(password);
   }
 
-  public async verify(password: string, hash: string): Promise<boolean> {
-    return await argon2.verify(hash, password);
+  public verify(password: string, hash: string): Promise<boolean> {
+    return argon2.verify(hash, password).catch(() => false);
   }
 }
