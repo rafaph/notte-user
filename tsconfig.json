@@ -21,11 +21,12 @@
     "noUnusedParameters": true,
     "outDir": "dist",
     "resolveJsonModule": true,
-    "inlineSourceMap": true,
-    "inlineSources": true,
     "strict": true,
     "target": "ES2021",
     "typeRoots": ["node_modules/@types", "types"]
   },
-  "include": ["src", "test"]
+  "include": ["src", "test"],
+  "ts-node": {
+    "swc": true
+  }
 }

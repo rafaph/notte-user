@@ -57,5 +57,5 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: [".eslintrc.js", "scripts", "nyc.config.js"],
+  ignorePatterns: [".eslintrc.js", "scripts", "nyc.config.js", "dist"],
 };
