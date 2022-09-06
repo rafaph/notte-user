@@ -5,7 +5,7 @@ import parallel from "mocha.parallel";
 
 import { makeUser } from "@test/domain/factories/make-user";
 import { TestApp } from "@test/helpers/test-app";
-import { makeCreateUserRequestBody } from "@test/infra/helpers/make-create-user-request-body";
+import { makeCreateUserRequestBody } from "@test/infra/factories/make-create-user-request-body";
 import { insertUser } from "@test/infra/repositories/pg/helpers/insert-user";
 import { selectUser } from "@test/infra/repositories/pg/helpers/select-user";
 
