@@ -16,7 +16,7 @@ export const UserSchema = v
 
 export type UserProps = v.infer<typeof UserSchema>;
 
-export class User extends Entity {
+export class User extends Entity implements UserProps {
   public readonly email!: string;
   public readonly password!: string;
   public readonly createdAt!: Date;

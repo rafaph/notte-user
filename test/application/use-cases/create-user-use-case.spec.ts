@@ -37,7 +37,7 @@ describe(CreateUserUseCase.name, () => {
     // given
     const { useCase, eventEmitter } = makeCreateUserUseCase();
     const input = makeCreateUserUseCaseInput({
-      email: faker.name.firstName(),
+      email: faker.person.firstName(),
     });
     // when
     await useCase.execute(input);

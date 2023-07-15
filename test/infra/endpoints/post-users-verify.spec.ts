@@ -67,7 +67,7 @@ parallel(`POST ${endpoint} @integration`, () => {
     await new TestApp().run(async (address) => {
       // given
       const body = makeGetUserRequestBody({
-        email: faker.name.firstName(),
+        email: faker.person.firstName(),
       });
       // when
       const { status } = await makeRequest(address, body);

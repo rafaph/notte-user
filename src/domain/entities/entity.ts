@@ -6,10 +6,6 @@ import { ValidatorType, safeParse } from "@/lib/validator";
 export class Entity {
   public readonly id!: string;
 
-  protected constructor(props: unknown) {
-    Object.assign(this, props);
-  }
-
   protected static createEntity<T extends Entity>(
     schema: ValidatorType,
     props: unknown,
@@ -20,7 +16,8 @@ export class Entity {
       return Err(new InvalidEntityError(result.error.issues));
     }
 
-    const entity = new this(result.data);
+    const entity = new this();
+    Object.assign(entity, result.data);
 
     return Ok(entity as T);
   }

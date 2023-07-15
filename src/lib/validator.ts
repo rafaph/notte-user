@@ -80,8 +80,11 @@ export function safeParse<T extends object>(
   const result = schema.safeParse(data);
 
   if (!result.success) {
-    result.error = new ValidatorError(result.error.issues);
+    return {
+      error: new ValidatorError(result.error.issues),
+      success: false,
+    };
   }
 
-  return result as SafeParseReturnType<unknown, T>;
+  return result;
 }

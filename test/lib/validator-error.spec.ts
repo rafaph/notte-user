@@ -31,7 +31,7 @@ describe(ValidatorError.name, () => {
     },
     {
       input: {
-        field1: faker.datatype.number({ min: 1, max: 1000 }).toString(10),
+        field1: faker.number.int({ min: 1, max: 1000 }).toString(10),
       },
       verify: (result: ErrorDetail) => !!result.field2,
     },

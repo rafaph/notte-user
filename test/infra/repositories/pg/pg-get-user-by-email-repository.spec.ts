@@ -27,7 +27,7 @@ describe(`${PgGetUserByEmailRepository.name} @integration`, () => {
       const user = makeUser();
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      user["email"] = faker.name.firstName();
+      user["email"] = faker.person.firstName();
       await insertUser(pool, user);
       const repository = new PgGetUserByEmailRepository(pool);
       // when
