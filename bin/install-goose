@@ -10,7 +10,7 @@ then
   ARCH=arm64
 fi
 
-VERSION="v3.6.1"
+VERSION="v3.13.4"
 GOOSE_URI="https://github.com/pressly/goose/releases/download/${VERSION}/goose_${OS}_${ARCH}"
 GOOSE_BIN=$(dirname "$0")/goose
 
