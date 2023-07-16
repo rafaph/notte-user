@@ -1,32 +1,30 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
-    "paths": {
-      "@/*": ["*"],
-      "@test/*": ["../test/*"]
-    },
-    "declaration": true,
-    "declarationMap": true,
-    "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+    "baseUrl": "src",
+    "declaration": true,
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "incremental": false,
-    "lib": ["ESNext", "DOM"],
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
     "module": "commonjs",
-    "moduleResolution": "Node",
+    "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "dist",
-    "resolveJsonModule": true,
+    "paths": {
+      "@/*": [
+        "*"
+      ],
+      "@test/*": [
+        "../test/*"
+      ]
+    },
+    "removeComments": true,
     "strict": true,
-    "target": "ES2021",
-    "typeRoots": ["node_modules/@types", "types"]
+    "target": "ES2021"
   },
-  "include": ["src", "test"],
-  "ts-node": {
-    "swc": true
-  }
+  "include": ["src", "test"]
 }

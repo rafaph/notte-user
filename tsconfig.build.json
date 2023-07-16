@@ -1,9 +1,4 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["test"],
-  "compilerOptions": {
-    "declaration": false,
-    "declarationMap": false,
-    "target": "ES2019"
-  }
+  "exclude": ["test"]
 }

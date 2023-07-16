@@ -23,7 +23,7 @@ module.exports = {
   },
   env: {
     node: true,
-    mocha: true,
+    jest: true,
   },
   rules: {
     "@typescript-eslint/require-await": "off",
@@ -57,5 +57,5 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: [".eslintrc.js", "scripts", "nyc.config.js", "dist"],
+  ignorePatterns: [".eslintrc.js", "dist"],
 };
