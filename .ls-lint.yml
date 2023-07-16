@@ -4,6 +4,11 @@ ls:
   .d.ts: kebab-case
   .spec.ts: kebab-case
   .config.ts: kebab-case
+  .controller.ts: kebab-case
+  .module.ts: kebab-case
+  .service.ts: kebab-case
+  .controller.spec.ts: kebab-case
+  .e2e-spec.ts: kebab-case
 
 ignore:
   - .git
@@ -12,5 +17,3 @@ ignore:
   - node_modules
   - .idea
   - .husky
-  - .nyc_output
-  - types/mocha.parallel

@@ -56,6 +56,14 @@ module.exports = {
         "newlines-between": "always",
       },
     ],
+    "@typescript-eslint/explicit-member-accessibility": "error"
   },
-  ignorePatterns: [".eslintrc.js", "dist"],
+  ignorePatterns: [
+    ".eslintrc.js",
+    "dist",
+    "node_modules",
+    ".husky",
+    "bin",
+    "database"
+  ],
 };

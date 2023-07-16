@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "src",
+    "baseUrl": ".",
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -16,15 +16,15 @@
     "outDir": "dist",
     "paths": {
       "@/*": [
-        "*"
+        "./src/*"
       ],
       "@test/*": [
-        "../test/*"
+        "./test/*"
       ]
     },
     "removeComments": true,
     "strict": true,
-    "target": "ES2021"
-  },
-  "include": ["src", "test"]
+    "target": "ES2021",
+    "resolveJsonModule": true
+  }
 }
