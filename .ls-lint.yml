@@ -8,6 +8,14 @@ ls:
   .module.ts: kebab-case
   .service.ts: kebab-case
   .controller.spec.ts: kebab-case
+  .repository.ts: kebab-case
+  .request.ts: kebab-case
+  .validator.ts: kebab-case
+  .error.ts: kebab-case
+  .command-handler.ts: kebab-case
+  .command.ts: kebab-case
+  .transform.ts: kebab-case
+  .factory.ts: kebab-case
   .e2e-spec.ts: kebab-case
 
 ignore:

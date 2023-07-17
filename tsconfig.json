@@ -8,6 +8,7 @@
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
     "module": "commonjs",
+    "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -23,8 +24,8 @@
       ]
     },
     "removeComments": true,
+    "resolveJsonModule": true,
     "strict": true,
-    "target": "ES2021",
-    "resolveJsonModule": true
+    "target": "ES2021"
   }
 }
