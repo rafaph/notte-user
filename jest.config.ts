@@ -17,6 +17,7 @@ const config: Config = {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: "<rootDir>/",
   }),
+  setupFiles: ["<rootDir>/test/jest.setup.ts"],
 };
 
 export default config;
