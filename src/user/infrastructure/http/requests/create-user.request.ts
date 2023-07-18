@@ -1,7 +1,7 @@
 import { IsEmail, IsString, Length, IsStrongPassword } from "class-validator";
 
 import { CreateUserCommand } from "@/user/application/commands";
-import { EqualsToProperty } from "@/user/domain/validators";
+import { EqualsToProperty } from "@/user/application/validators";
 
 export class CreateUserRequest {
   @IsString()
