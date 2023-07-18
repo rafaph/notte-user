@@ -12,6 +12,7 @@ jest.mock("argon2", () => ({
 function makeSut(): Argon2PasswordHasherService {
   return new Argon2PasswordHasherService();
 }
+
 describe(Argon2PasswordHasherService.name, () => {
   it("should hash a password", async () => {
     // given
