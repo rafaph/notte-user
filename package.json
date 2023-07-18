@@ -11,10 +11,10 @@
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test:watch": "npm run test --  --watch",
+    "test:cov": "npm run test -- --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e": "npm run test -- --config ./test/jest-e2e.json",
     "prepare": "husky install",
     "check-updates": "npx --quiet --yes npm-check-updates"
   },
