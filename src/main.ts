@@ -9,17 +9,22 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
   });
-  app.useLogger(app.get(Logger));
+  const logger = app.get(Logger);
+  const { port } = app.get(AppConfig);
+
+  app.useLogger(logger);
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
+      forbidUnknownValues: true,
     }),
   );
   app.enableVersioning();
   app.setGlobalPrefix("api");
 
-  const { port } = app.get(AppConfig);
-  await app.listen(port);
+  await app.listen(port, () => {
+    logger.log(`Listening on port ${port}`, "Bootstrap");
+  });
 }
 
 void bootstrap();
