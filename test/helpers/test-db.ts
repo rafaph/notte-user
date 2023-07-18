@@ -47,7 +47,7 @@ const createTables = (databaseUrl: string): Promise<void> => {
 
 export class TestDb {
   private readonly name = `test_${randomUUID().toString().replaceAll("-", "")}`;
-  public pool!: Pool;
+  public pool?: Pool;
 
   public get url(): string {
     const connectionString = new ConnectionString(process.env.DATABASE_URL);
@@ -67,14 +67,14 @@ export class TestDb {
   }
 
   public async down(): Promise<void> {
-    await this.pool.end();
+    await this.pool?.end();
     await dropDatabase(this.name);
   }
 
   public async run(callback: (pool: Pool) => Promise<void>): Promise<void> {
     try {
       await this.up();
-      await callback(this.pool);
+      await callback(this.pool as Pool);
     } finally {
       await this.down();
     }
