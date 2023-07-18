@@ -10,7 +10,7 @@ export class PgCreateUserRepository implements CreateUserRepository {
 
   public async create(user: User): Promise<void> {
     const queryText =
-      'INSERT INTO users (id, firstName, lastName, email, password, "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, $5, $6, $7)';
+      'INSERT INTO users (id, "firstName", "lastName", email, password, "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, $5, $6, $7)';
     const values = [
       user.id,
       user.firstName,
