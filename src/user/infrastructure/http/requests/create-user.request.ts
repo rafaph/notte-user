@@ -1,23 +1,15 @@
-import {
-  IsEmail,
-  IsString,
-  MinLength,
-  MaxLength,
-  IsStrongPassword,
-} from "class-validator";
+import { IsEmail, IsString, Length, IsStrongPassword } from "class-validator";
 
 import { CreateUserCommand } from "@/user/application/commands";
 import { EqualsToProperty } from "@/user/domain/validators";
 
 export class CreateUserRequest {
   @IsString()
-  @MinLength(4)
-  @MaxLength(100)
+  @Length(4, 100)
   public firstName!: string;
 
   @IsString()
-  @MinLength(4)
-  @MaxLength(100)
+  @Length(4, 100)
   public lastName!: string;
 
   @IsEmail()
