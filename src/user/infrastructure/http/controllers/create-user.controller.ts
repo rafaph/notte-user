@@ -9,10 +9,7 @@ import {
 } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
 
-import {
-  EmailAlreadyInUseError,
-  UserCreationError,
-} from "@/user/domain/errors";
+import { EmailAlreadyInUseError } from "@/user/domain/errors";
 import { CreateUserRequest } from "@/user/infrastructure/http/requests";
 
 @Controller("user")
@@ -25,7 +22,7 @@ export class CreateUserController {
   @Post()
   public async handle(@Body() request: CreateUserRequest): Promise<void> {
     const command = request.toCommand();
-
+    this.logger.log(`command = ${JSON.stringify(command.userProps, null, 4)}`);
     try {
       await this.commandBus.execute(command);
     } catch (error) {
@@ -35,14 +32,11 @@ export class CreateUserController {
         );
       }
 
-      if (error instanceof UserCreationError) {
-        throw new InternalServerErrorException(
-          "Fail to create your user, please try again later.",
-        );
-      }
-
       this.logger.error("Fail to create user", error);
-      throw error;
+
+      throw new InternalServerErrorException(
+        "Fail to create your user, please try again later.",
+      );
     }
   }
 }
