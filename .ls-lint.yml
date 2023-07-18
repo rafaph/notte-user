@@ -4,19 +4,30 @@ ls:
   .d.ts: kebab-case
   .spec.ts: kebab-case
   .config.ts: kebab-case
+  .config.spec.ts: kebab-case
   .controller.ts: kebab-case
+  .controller.spec.ts: kebab-case
   .module.ts: kebab-case
   .service.ts: kebab-case
-  .controller.spec.ts: kebab-case
+  .service.spec.ts: kebab-case
   .repository.ts: kebab-case
+  .repository.spec.ts: kebab-case
   .request.ts: kebab-case
+  .request.spec.ts: kebab-case
   .validator.ts: kebab-case
+  .validator.spec.ts: kebab-case
   .error.ts: kebab-case
+  .error.spec.ts: kebab-case
   .command-handler.ts: kebab-case
+  .command-handler.spec.ts: kebab-case
   .command.ts: kebab-case
+  .command.spec.ts: kebab-case
   .transform.ts: kebab-case
+  .transform.spec.ts: kebab-case
   .factory.ts: kebab-case
+  .factory.spec.ts: kebab-case
   .e2e-spec.ts: kebab-case
+  .builder.ts: kebab-case
 
 ignore:
   - .git
