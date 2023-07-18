@@ -29,6 +29,7 @@ ls:
   .e2e-spec.ts: kebab-case
   .builder.ts: kebab-case
   .setup.ts: kebab-case
+  .mock.ts: kebab-case
 
 ignore:
   - .git
