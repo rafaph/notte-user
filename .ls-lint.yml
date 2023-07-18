@@ -28,6 +28,7 @@ ls:
   .factory.spec.ts: kebab-case
   .e2e-spec.ts: kebab-case
   .builder.ts: kebab-case
+  .setup.ts: kebab-case
 
 ignore:
   - .git
