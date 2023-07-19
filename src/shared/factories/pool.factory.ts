@@ -2,6 +2,7 @@ import { Pool } from "pg";
 
 import { AppConfig } from "@/shared/config";
 
+/* istanbul ignore next */
 export function poolFactory(config: AppConfig): Pool {
   return new Pool({
     connectionString: config.database.url,

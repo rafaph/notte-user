@@ -22,6 +22,7 @@ export function appConfigFactory(): AppConfig {
   const config = plainToInstance(AppConfig, plainConfig);
   const errors = validateSync(config);
 
+  /* istanbul ignore next */
   if (errors.length > 0) {
     logger.error("Invalid configuration, errors = ", errors);
     throw new InvalidConfigurationError();

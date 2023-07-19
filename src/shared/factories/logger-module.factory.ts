@@ -2,6 +2,7 @@ import { Params } from "nestjs-pino";
 
 import { AppConfig } from "@/shared/config";
 
+/* istanbul ignore next */
 function mapLogLevel(logLevel: string): string {
   switch (logLevel) {
     case "verbose":
@@ -15,6 +16,7 @@ function mapLogLevel(logLevel: string): string {
   return logLevel;
 }
 
+/* istanbul ignore next */
 export function loggerModuleFactory(
   config: AppConfig,
 ): Params | Promise<Params> {

@@ -6,7 +6,7 @@ import { DatabaseConfig } from "@/shared/config/database.config";
 
 @Injectable()
 export class AppConfig {
-  @IsIn(["development", "production", "testing"])
+  @IsIn(["development", "production", "test"])
   public readonly env!: string;
 
   @IsPort()

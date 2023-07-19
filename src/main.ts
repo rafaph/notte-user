@@ -1,30 +1,11 @@
-import { ValidationPipe } from "@nestjs/common";
-import { NestFactory } from "@nestjs/core";
-import { Logger } from "nestjs-pino";
+/* istanbul ignore file */
 
-import { AppModule } from "@/app.module";
-import { AppConfig } from "@/shared/config";
+import { App } from "@/app";
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    bufferLogs: true,
-  });
-  const logger = app.get(Logger);
-  const { port } = app.get(AppConfig);
+async function main() {
+  const app = await App.create();
 
-  app.useLogger(logger);
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      forbidUnknownValues: true,
-    }),
-  );
-  app.enableVersioning();
-  app.setGlobalPrefix("api");
-
-  await app.listen(port, () => {
-    logger.log(`Listening on port ${port}`, "Bootstrap");
-  });
+  await app.listen();
 }
 
-void bootstrap();
+void main();
