@@ -3,6 +3,7 @@ import { Type } from "class-transformer";
 import { IsIn, IsIP, IsPort, ValidateNested } from "class-validator";
 
 import { DatabaseConfig } from "@/shared/config/database.config";
+import { LoggerConfig } from "@/shared/config/logger.config";
 
 @Injectable()
 export class AppConfig {
@@ -15,8 +16,9 @@ export class AppConfig {
   @IsIP()
   public readonly host!: string;
 
-  @IsIn(["verbose", "debug", "log", "warn", "error"])
-  public readonly logLevel!: string;
+  @ValidateNested()
+  @Type(() => LoggerConfig)
+  public readonly logger!: LoggerConfig;
 
   @ValidateNested()
   @Type(() => DatabaseConfig)

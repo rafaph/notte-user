@@ -5,6 +5,7 @@ import { pathsToModuleNameMapper } from "ts-jest";
 import { compilerOptions } from "./tsconfig.json";
 
 const config: Config = {
+  testTimeout: 30000,
   moduleFileExtensions: ["js", "json", "ts"],
   rootDir: ".",
   testRegex: ".*\\.(e2e-)?spec\\.ts$",

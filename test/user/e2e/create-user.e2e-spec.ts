@@ -7,9 +7,8 @@ import * as request from "supertest";
 
 import { CreateUserRepository } from "@/user/domain/repositories";
 
-import { TestApp } from "@test/helpers/test-app";
-import { UserBuilder } from "@test/user/builders";
-import { CreateUserRequestBuilder } from "@test/user/builders/create-user-request.builder";
+import { TestApp } from "@test/helpers";
+import { UserBuilder, CreateUserRequestBuilder } from "@test/user/builders";
 import { insertUser } from "@test/user/infrastructure/repositories/pg/helpers";
 
 function makeRequest(

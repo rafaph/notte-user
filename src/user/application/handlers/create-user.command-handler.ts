@@ -52,7 +52,7 @@ export class CreateUserCommandHandler
     try {
       return await this.createUserRepository.create(user);
     } catch (error) {
-      this.logger.error("Fail to create user", error);
+      this.logger.error("Fail to create user on repository", error);
       throw new UserCreationError();
     }
   }

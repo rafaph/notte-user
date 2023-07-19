@@ -9,7 +9,7 @@ export class CreateUserRequestBuilder {
 
   public constructor() {
     const password = faker.internet.password({
-      prefix: "@aA1",
+      prefix: "@c6$A1!",
     });
     this.props = {
       firstName: faker.person.firstName(),

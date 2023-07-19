@@ -5,11 +5,11 @@ import { EqualsToProperty } from "@/user/application/validators";
 
 export class CreateUserRequest {
   @IsString()
-  @Length(4, 100)
+  @Length(2, 100)
   public firstName!: string;
 
   @IsString()
-  @Length(4, 100)
+  @Length(2, 100)
   public lastName!: string;
 
   @IsEmail()

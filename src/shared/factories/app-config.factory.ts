@@ -12,7 +12,10 @@ export function appConfigFactory(): AppConfig {
     env: process.env.NODE_ENV,
     port: process.env.PORT,
     host: process.env.HOST,
-    logLevel: process.env.LOG_LEVEL,
+    logger: {
+      disabled: process.env.LOG_DISABLED,
+      level: process.env.LOG_LEVEL,
+    },
     database: {
       url: process.env.DATABASE_URL,
       poolMin: process.env.DATABASE_POOL_MIN,

@@ -9,6 +9,7 @@ import {
   UserExistsRepository,
 } from "@/user/domain/repositories";
 
+import { disableLogs } from "@test/helpers";
 import { CreateUserCommandBuilder } from "@test/user/builders";
 import {
   CreateUserRepositoryMock,
@@ -36,6 +37,8 @@ function makeSut(): SutType {
     deps.createUserRepository,
     deps.passwordHasher,
   );
+
+  disableLogs(sut);
 
   return { sut, deps };
 }

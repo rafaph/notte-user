@@ -22,7 +22,7 @@ export class CreateUserController {
   @Post()
   public async handle(@Body() request: CreateUserRequest): Promise<void> {
     const command = request.toCommand();
-    this.logger.log(`command = ${JSON.stringify(command.userProps, null, 4)}`);
+
     try {
       await this.commandBus.execute(command);
     } catch (error) {

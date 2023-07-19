@@ -22,7 +22,8 @@ export function loggerModuleFactory(
 ): Params | Promise<Params> {
   const params: Params = {
     pinoHttp: {
-      level: mapLogLevel(config.logLevel),
+      enabled: !config.logger.disabled,
+      level: mapLogLevel(config.logger.level),
     },
   };
 
