@@ -9,3 +9,6 @@ if (!onContainer) {
     path: path.join(__dirname, "..", "local.env"),
   });
 }
+
+process.env.LOG_DISABLED = "true";
+process.env.LOG_LEVEL = "error";
