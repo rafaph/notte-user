@@ -17,7 +17,7 @@ export type WritableUserProps = Omit<
   "id" | "createdAt" | "updatedAt"
 >;
 
-export class User {
+export class User implements UserProps {
   public readonly id: string;
   public readonly firstName: string;
   public readonly lastName: string;
