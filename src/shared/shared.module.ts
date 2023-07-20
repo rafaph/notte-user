@@ -1,4 +1,5 @@
 import { Global, Module } from "@nestjs/common";
+import { CqrsModule } from "@nestjs/cqrs";
 import { KnexModule } from "nest-knexjs";
 import { LoggerModule } from "nestjs-pino";
 
@@ -12,6 +13,7 @@ import {
 @Global()
 @Module({
   imports: [
+    CqrsModule,
     LoggerModule.forRootAsync({
       useFactory: loggerModuleFactory,
       inject: [AppConfig],
@@ -27,6 +29,6 @@ import {
       useFactory: appConfigFactory,
     },
   ],
-  exports: [AppConfig],
+  exports: [CqrsModule, AppConfig],
 })
 export class SharedModule {}
