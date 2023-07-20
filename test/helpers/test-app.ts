@@ -2,7 +2,7 @@ import { Server } from "http";
 
 import { INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
-import { Pool } from "pg";
+import { DEFAULT_CONNECTION_NAME } from "nest-knexjs/dist/knex.constants";
 
 import { App } from "@/app";
 import { AppModule } from "@/app.module";
@@ -16,8 +16,8 @@ export class TestApp extends App {
     const testingModule = await Test.createTestingModule({
       imports: [AppModule],
     })
-      .overrideProvider(Pool)
-      .useValue(this.testDb.pool)
+      .overrideProvider(DEFAULT_CONNECTION_NAME)
+      .useValue(this.testDb.knex)
       .compile();
 
     this.app = testingModule.createNestApplication({

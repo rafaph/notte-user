@@ -1,18 +1,18 @@
 import { faker } from "@faker-js/faker";
 
-import { PgUserExistsRepository } from "@/user/infrastructure/repositories/pg";
+import { DbUserExistsRepository } from "@/user/infrastructure/repositories/db";
 
 import { TestDb } from "@test/helpers";
 import { UserBuilder } from "@test/user/builders";
-import { insertUser } from "@test/user/infrastructure/repositories/pg/helpers";
+import { insertUser } from "@test/user/infrastructure/repositories/db/helpers";
 
-describe(PgUserExistsRepository.name, () => {
+describe(DbUserExistsRepository.name, () => {
   it("should return true if user exists", async () => {
-    await new TestDb().run(async (pool) => {
+    await new TestDb().run(async (knex) => {
       // given
-      const sut = new PgUserExistsRepository(pool);
+      const sut = new DbUserExistsRepository(knex);
       const user = new UserBuilder().build();
-      await insertUser(pool, user);
+      await insertUser(knex, user);
 
       // when
       const exists = await sut.exists(user.email);
@@ -23,9 +23,9 @@ describe(PgUserExistsRepository.name, () => {
   });
 
   it("should return false if no user is found", async () => {
-    await new TestDb().run(async (pool) => {
+    await new TestDb().run(async (knex) => {
       // given
-      const sut = new PgUserExistsRepository(pool);
+      const sut = new DbUserExistsRepository(knex);
       const email = faker.internet.email();
 
       // when

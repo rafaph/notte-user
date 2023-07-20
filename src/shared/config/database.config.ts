@@ -1,21 +1,36 @@
-import { Transform } from "class-transformer";
-import { IsInt, IsUrl } from "class-validator";
+import { Transform, Type } from "class-transformer";
+import { IsInt, IsNotEmpty, ValidateNested } from "class-validator";
 
 import { toInt } from "@/shared/transformers";
 
+export class PoolConfig {
+  @IsInt()
+  @Transform(toInt)
+  public readonly min!: number;
+
+  @IsInt()
+  @Transform(toInt)
+  public readonly max!: number;
+}
+
 export class DatabaseConfig {
-  @IsUrl({
-    require_protocol: true,
-    protocols: ["postgresql"],
-    require_tld: false,
-  })
-  public readonly url!: string;
+  @IsNotEmpty()
+  public readonly host!: string;
 
   @IsInt()
   @Transform(toInt)
-  public readonly poolMin!: number;
+  public readonly port!: number;
 
-  @IsInt()
-  @Transform(toInt)
-  public readonly poolMax!: number;
+  @IsNotEmpty()
+  public readonly user!: string;
+
+  @IsNotEmpty()
+  public readonly password!: string;
+
+  @IsNotEmpty()
+  public readonly name!: string;
+
+  @ValidateNested()
+  @Type(() => PoolConfig)
+  public readonly pool!: PoolConfig;
 }

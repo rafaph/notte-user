@@ -9,9 +9,9 @@ import {
 } from "@/user/domain/repositories";
 import { CreateUserController } from "@/user/infrastructure/http/controllers";
 import {
-  PgCreateUserRepository,
-  PgUserExistsRepository,
-} from "@/user/infrastructure/repositories/pg";
+  DbCreateUserRepository,
+  DbUserExistsRepository,
+} from "@/user/infrastructure/repositories/db";
 import { Argon2PasswordHasherService } from "@/user/infrastructure/services";
 
 @Module({
@@ -19,11 +19,11 @@ import { Argon2PasswordHasherService } from "@/user/infrastructure/services";
   providers: [
     {
       provide: UserExistsRepository,
-      useClass: PgUserExistsRepository,
+      useClass: DbUserExistsRepository,
     },
     {
       provide: CreateUserRepository,
-      useClass: PgCreateUserRepository,
+      useClass: DbCreateUserRepository,
     },
     {
       provide: PasswordHasherService,

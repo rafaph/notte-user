@@ -1,5 +1,7 @@
 import { randomUUID } from "crypto";
 
+import { setMilliseconds } from "date-fns";
+
 export interface UserProps {
   id: string;
   firstName: string;
@@ -30,14 +32,14 @@ export class User {
     this.lastName = props.lastName;
     this.email = props.email;
     this.password = props.password;
-    this.updatedAt = props.updatedAt;
-    this.createdAt = props.createdAt;
+    this.updatedAt = setMilliseconds(props.updatedAt, 0);
+    this.createdAt = setMilliseconds(props.createdAt, 0);
   }
 
   public update(props: WritableUserProps): void {
     Object.assign(this, {
       ...props,
-      updatedAt: new Date(),
+      updatedAt: setMilliseconds(new Date(), 0),
     });
   }
 

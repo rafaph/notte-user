@@ -1,12 +1,12 @@
 import { Global, Module } from "@nestjs/common";
+import { KnexModule } from "nest-knexjs";
 import { LoggerModule } from "nestjs-pino";
-import { Pool } from "pg";
 
 import { AppConfig } from "@/shared/config";
 import {
   appConfigFactory,
+  knexModuleFactory,
   loggerModuleFactory,
-  poolFactory,
 } from "@/shared/factories";
 
 @Global()
@@ -16,18 +16,17 @@ import {
       useFactory: loggerModuleFactory,
       inject: [AppConfig],
     }),
+    KnexModule.forRootAsync({
+      useFactory: knexModuleFactory,
+      inject: [AppConfig],
+    }),
   ],
   providers: [
     {
       provide: AppConfig,
       useFactory: appConfigFactory,
     },
-    {
-      provide: Pool,
-      useFactory: poolFactory,
-      inject: [AppConfig],
-    },
   ],
-  exports: [AppConfig, Pool],
+  exports: [AppConfig],
 })
 export class SharedModule {}

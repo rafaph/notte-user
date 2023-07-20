@@ -7,7 +7,6 @@ import { InvalidConfigurationError } from "@/shared/errors";
 
 export function appConfigFactory(): AppConfig {
   const logger = new Logger(AppConfig.name);
-
   const plainConfig = {
     env: process.env.NODE_ENV,
     port: process.env.PORT,
@@ -17,9 +16,15 @@ export function appConfigFactory(): AppConfig {
       level: process.env.LOG_LEVEL,
     },
     database: {
-      url: process.env.DATABASE_URL,
-      poolMin: process.env.DATABASE_POOL_MIN,
-      poolMax: process.env.DATABASE_POOL_MAX,
+      host: process.env.DATABASE_HOST,
+      port: process.env.DATABASE_PORT,
+      user: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      name: process.env.DATABASE_NAME,
+      pool: {
+        min: process.env.DATABASE_POOL_MIN,
+        max: process.env.DATABASE_POOL_MAX,
+      },
     },
   };
   const config = plainToInstance(AppConfig, plainConfig);
