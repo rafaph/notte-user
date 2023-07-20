@@ -2,15 +2,15 @@ import { Knex } from "knex";
 
 import { User, UserProps } from "@/user/domain/models";
 
-export async function queryUser(
+export async function queryUser<K extends keyof UserProps>(
   knex: Knex,
-  criteria: { [key: string]: unknown },
+  criteria: { [key in K]: UserProps[K] },
 ): Promise<User[]> {
-  const rows = await knex("users").where(criteria).select("*");
-
-  if (rows.length === 0) {
-    throw new Error("No users found.");
+  if (Object.keys(criteria).length === 0) {
+    throw new Error("Criteria cannot be an empty object.");
   }
 
-  return rows.map((row) => new User(row as UserProps));
+  const rows = await knex<UserProps>("users").where(criteria).select("*");
+
+  return rows.map((row) => new User(row));
 }
