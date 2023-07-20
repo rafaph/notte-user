@@ -1,7 +1,7 @@
 import { Transform } from "class-transformer";
 import { IsBoolean, IsIn, IsOptional } from "class-validator";
 
-import { toBoolean } from "@/shared/transformers";
+import { toBoolean } from "@/shared/application/transformers";
 
 export class LoggerConfig {
   @IsOptional()

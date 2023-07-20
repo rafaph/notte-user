@@ -1,7 +1,7 @@
 import { Transform, Type } from "class-transformer";
 import { IsInt, IsNotEmpty, ValidateNested } from "class-validator";
 
-import { toInt } from "@/shared/transformers";
+import { toInt } from "@/shared/application/transformers";
 
 export class PoolConfig {
   @IsInt()

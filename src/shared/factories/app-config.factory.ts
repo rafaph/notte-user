@@ -3,7 +3,7 @@ import { plainToInstance } from "class-transformer";
 import { validateSync } from "class-validator";
 
 import { AppConfig } from "@/shared/config";
-import { InvalidConfigurationError } from "@/shared/errors";
+import { InvalidConfigurationError } from "@/shared/domain/errors";
 
 export function appConfigFactory(): AppConfig {
   const logger = new Logger(AppConfig.name);

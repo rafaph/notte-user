@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 
-import { toBoolean } from "@/shared/transformers";
+import { toBoolean } from "@/shared/application/transformers";
 
 describe("to-boolean.transform", () => {
   test.each([

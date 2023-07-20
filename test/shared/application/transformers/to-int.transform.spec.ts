@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 
-import { toInt } from "@/shared/transformers";
+import { toInt } from "@/shared/application/transformers";
 
 const cases = Array.from(
   { length: faker.number.int({ min: 5, max: 10 }) },
