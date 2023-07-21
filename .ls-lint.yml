@@ -18,10 +18,12 @@ ls:
   .validator.spec.ts: kebab-case
   .error.ts: kebab-case
   .error.spec.ts: kebab-case
-  .command-handler.ts: kebab-case
-  .command-handler.spec.ts: kebab-case
+  .handler.ts: kebab-case
+  .handler.spec.ts: kebab-case
   .command.ts: kebab-case
   .command.spec.ts: kebab-case
+  .query.ts: kebab-case
+  .query.spec.ts: kebab-case
   .transform.ts: kebab-case
   .transform.spec.ts: kebab-case
   .factory.ts: kebab-case
