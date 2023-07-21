@@ -1,1 +1,1 @@
-export { PasswordHasherServiceMock } from "@test/shared/mocks/password-hasher-service.mock";
+export { PasswordServiceMock } from "@test/shared/mocks/password-service.mock";

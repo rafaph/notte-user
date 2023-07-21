@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import * as argon2 from "argon2";
 
-import { PasswordHasherService } from "@/shared/application/services";
+import { PasswordService } from "@/shared/application/services";
 
 @Injectable()
-export class Argon2PasswordHasherService implements PasswordHasherService {
+export class Argon2PasswordService implements PasswordService {
   public hash(password: string): Promise<string> {
     return argon2.hash(password);
   }

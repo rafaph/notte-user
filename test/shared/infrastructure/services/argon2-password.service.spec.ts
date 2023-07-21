@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import * as argon2 from "argon2";
 
-import { Argon2PasswordHasherService } from "@/shared/infrastructure/services";
+import { Argon2PasswordService } from "@/shared/infrastructure/services";
 
 jest.mock("argon2", () => ({
   hash: jest.fn((password: string) => Promise.resolve(`hashed_${password}`)),
@@ -10,11 +10,11 @@ jest.mock("argon2", () => ({
   ),
 }));
 
-function makeSut(): Argon2PasswordHasherService {
-  return new Argon2PasswordHasherService();
+function makeSut(): Argon2PasswordService {
+  return new Argon2PasswordService();
 }
 
-describe(Argon2PasswordHasherService.name, () => {
+describe(Argon2PasswordService.name, () => {
   it("should hash a password", async () => {
     // given
     const sut = makeSut();

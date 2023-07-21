@@ -1,1 +1,2 @@
-export { PasswordHasherService } from "@/shared/application/services/password-hasher.service";
+export { TokenService } from "@/shared/application/services/token.service";
+export { PasswordService } from "@/shared/application/services/password.service";

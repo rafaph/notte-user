@@ -3,14 +3,17 @@ import { CqrsModule } from "@nestjs/cqrs";
 import { KnexModule } from "nest-knexjs";
 import { LoggerModule } from "nestjs-pino";
 
-import { PasswordHasherService } from "@/shared/application/services";
+import { PasswordService, TokenService } from "@/shared/application/services";
 import { AppConfig } from "@/shared/config";
 import {
   appConfigFactory,
   knexModuleFactory,
   loggerModuleFactory,
 } from "@/shared/factories";
-import { Argon2PasswordHasherService } from "@/shared/infrastructure/services";
+import {
+  Argon2PasswordService,
+  JwtTokenService,
+} from "@/shared/infrastructure/services";
 
 @Global()
 @Module({
@@ -31,10 +34,14 @@ import { Argon2PasswordHasherService } from "@/shared/infrastructure/services";
       useFactory: appConfigFactory,
     },
     {
-      provide: PasswordHasherService,
-      useClass: Argon2PasswordHasherService,
+      provide: PasswordService,
+      useClass: Argon2PasswordService,
+    },
+    {
+      provide: TokenService,
+      useClass: JwtTokenService,
     },
   ],
-  exports: [CqrsModule, AppConfig, PasswordHasherService],
+  exports: [CqrsModule, AppConfig, PasswordService, JwtTokenService],
 })
 export class SharedModule {}

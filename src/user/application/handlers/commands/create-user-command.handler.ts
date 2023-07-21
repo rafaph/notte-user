@@ -1,7 +1,7 @@
 import { Logger } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 
-import { PasswordHasherService } from "@/shared/application/services";
+import { PasswordService } from "@/shared/application/services";
 import { CreateUserCommand } from "@/user/application/commands";
 import {
   EmailAlreadyInUseError,
@@ -22,7 +22,7 @@ export class CreateUserCommandHandler
   public constructor(
     private readonly userExistsRepository: UserExistsRepository,
     private readonly createUserRepository: CreateUserRepository,
-    private readonly passwordHasher: PasswordHasherService,
+    private readonly passwordService: PasswordService,
   ) {}
 
   private async checkEmailInUse(email: string): Promise<boolean> {
@@ -36,7 +36,7 @@ export class CreateUserCommandHandler
 
   private async hashPassword(password: string): Promise<string> {
     try {
-      return await this.passwordHasher.hash(password);
+      return await this.passwordService.hash(password);
     } catch (error) {
       this.logger.error("Fail to hash user password", error);
       throw new UserCreationError();

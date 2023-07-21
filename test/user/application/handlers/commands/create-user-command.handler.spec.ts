@@ -1,4 +1,4 @@
-import { PasswordHasherService } from "@/shared/application/services";
+import { PasswordService } from "@/shared/application/services";
 import { CreateUserCommandHandler } from "@/user/application/handlers/commands";
 import {
   EmailAlreadyInUseError,
@@ -10,7 +10,7 @@ import {
 } from "@/user/domain/repositories";
 
 import { disableLogs } from "@test/helpers";
-import { PasswordHasherServiceMock } from "@test/shared/mocks";
+import { PasswordServiceMock } from "@test/shared/mocks";
 import { CreateUserCommandBuilder } from "@test/user/builders";
 import {
   CreateUserRepositoryMock,
@@ -22,7 +22,7 @@ interface SutType {
   deps: {
     userExistsRepository: UserExistsRepository;
     createUserRepository: CreateUserRepository;
-    passwordHasher: PasswordHasherService;
+    passwordService: PasswordService;
   };
 }
 
@@ -30,12 +30,12 @@ function makeSut(): SutType {
   const deps: SutType["deps"] = {
     userExistsRepository: new UserExistsRepositoryMock(),
     createUserRepository: new CreateUserRepositoryMock(),
-    passwordHasher: new PasswordHasherServiceMock(),
+    passwordService: new PasswordServiceMock(),
   };
   const sut = new CreateUserCommandHandler(
     deps.userExistsRepository,
     deps.createUserRepository,
-    deps.passwordHasher,
+    deps.passwordService,
   );
 
   disableLogs(sut);
@@ -89,9 +89,9 @@ describe(CreateUserCommandHandler.name, () => {
   it("should throw an UserCreationError when passwordHasher fails", async () => {
     // given
     const { sut, deps } = makeSut();
-    const { passwordHasher } = deps;
+    const { passwordService } = deps;
     const command = new CreateUserCommandBuilder().build();
-    jest.spyOn(passwordHasher, "hash").mockRejectedValueOnce(undefined);
+    jest.spyOn(passwordService, "hash").mockRejectedValueOnce(undefined);
 
     // when
     const execute = sut.execute(command);

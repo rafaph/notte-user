@@ -24,6 +24,8 @@ ls:
   .command.spec.ts: kebab-case
   .query.ts: kebab-case
   .query.spec.ts: kebab-case
+  .result.ts: kebab-case
+  .result.spec.ts: kebab-case
   .transform.ts: kebab-case
   .transform.spec.ts: kebab-case
   .factory.ts: kebab-case

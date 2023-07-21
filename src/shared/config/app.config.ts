@@ -4,6 +4,7 @@ import { IsIn, IsIP, IsPort, ValidateNested } from "class-validator";
 
 import { DatabaseConfig } from "@/shared/config/database.config";
 import { LoggerConfig } from "@/shared/config/logger.config";
+import {JwtConfig} from "@/shared/config/jwt.config";
 
 @Injectable()
 export class AppConfig {
@@ -23,4 +24,8 @@ export class AppConfig {
   @ValidateNested()
   @Type(() => DatabaseConfig)
   public readonly database!: DatabaseConfig;
+
+  @ValidateNested()
+  @Type(() => JwtConfig)
+  public readonly jwt!: JwtConfig;
 }
