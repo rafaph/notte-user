@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 
-import { CreateUserCommandHandler } from "@/user/application/handlers";
+import { CreateUserCommandHandler } from "@/user/application/handlers/commands";
 import {
   CreateUserRepository,
   UserExistsRepository,

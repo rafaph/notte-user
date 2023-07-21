@@ -1,5 +1,5 @@
 import { PasswordHasherService } from "@/shared/application/services";
-import { CreateUserCommandHandler } from "@/user/application/handlers";
+import { CreateUserCommandHandler } from "@/user/application/handlers/commands";
 import {
   EmailAlreadyInUseError,
   UserCreationError,
