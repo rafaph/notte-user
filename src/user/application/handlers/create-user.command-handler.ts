@@ -1,8 +1,8 @@
 import { Logger } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 
+import { PasswordHasherService } from "@/shared/application/services";
 import { CreateUserCommand } from "@/user/application/commands";
-import { PasswordHasherService } from "@/user/application/services";
 import {
   EmailAlreadyInUseError,
   UserCreationError,

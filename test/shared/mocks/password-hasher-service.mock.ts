@@ -1,4 +1,4 @@
-import { PasswordHasherService } from "@/user/application/services";
+import { PasswordHasherService } from "@/shared/application/services";
 
 export class PasswordHasherServiceMock implements PasswordHasherService {
   public async hash(password: string): Promise<string> {

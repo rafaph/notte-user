@@ -1,7 +1,8 @@
 import { faker } from "@faker-js/faker";
 import * as argon2 from "argon2";
 
-import { Argon2PasswordHasherService } from "@/user/infrastructure/services";
+import { Argon2PasswordHasherService } from "@/shared/infrastructure/services";
+
 jest.mock("argon2", () => ({
   hash: jest.fn((password: string) => Promise.resolve(`hashed_${password}`)),
   verify: jest.fn((hash: string, password: string) =>

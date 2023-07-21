@@ -1,5 +1,5 @@
+import { PasswordHasherService } from "@/shared/application/services";
 import { CreateUserCommandHandler } from "@/user/application/handlers";
-import { PasswordHasherService } from "@/user/application/services";
 import {
   EmailAlreadyInUseError,
   UserCreationError,
@@ -10,10 +10,10 @@ import {
 } from "@/user/domain/repositories";
 
 import { disableLogs } from "@test/helpers";
+import { PasswordHasherServiceMock } from "@test/shared/mocks";
 import { CreateUserCommandBuilder } from "@test/user/builders";
 import {
   CreateUserRepositoryMock,
-  PasswordHasherServiceMock,
   UserExistsRepositoryMock,
 } from "@test/user/mocks";
 

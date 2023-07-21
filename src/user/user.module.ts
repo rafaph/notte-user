@@ -1,7 +1,6 @@
 import { Module } from "@nestjs/common";
 
 import { CreateUserCommandHandler } from "@/user/application/handlers";
-import { PasswordHasherService } from "@/user/application/services";
 import {
   CreateUserRepository,
   UserExistsRepository,
@@ -11,7 +10,6 @@ import {
   DbCreateUserRepository,
   DbUserExistsRepository,
 } from "@/user/infrastructure/repositories/db";
-import { Argon2PasswordHasherService } from "@/user/infrastructure/services";
 
 @Module({
   providers: [
@@ -22,10 +20,6 @@ import { Argon2PasswordHasherService } from "@/user/infrastructure/services";
     {
       provide: CreateUserRepository,
       useClass: DbCreateUserRepository,
-    },
-    {
-      provide: PasswordHasherService,
-      useClass: Argon2PasswordHasherService,
     },
     CreateUserCommandHandler,
   ],
