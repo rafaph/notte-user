@@ -6,7 +6,9 @@ import { FindUserByEmailRepository } from "@/domain/repositories";
 export class FindUserByEmailRepositoryMock
   implements FindUserByEmailRepository
 {
+  public constructor(private readonly returnedUser: Option<User> = None) {}
+
   public async findByEmail(): Promise<Option<User>> {
-    return None;
+    return this.returnedUser;
   }
 }

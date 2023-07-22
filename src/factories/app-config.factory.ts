@@ -42,6 +42,7 @@ export function appConfigFactory(): AppConfig {
     throw new InvalidConfigurationError();
   }
 
+  /* istanbul ignore next */
   if (!config.logger.disabled) {
     logger.log("Valid configuration, continuing...");
   }
