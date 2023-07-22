@@ -10,8 +10,7 @@ import { PasswordService, TokenService } from "@/application/services";
 import { AppConfig } from "@/config";
 import {
   CreateUserRepository,
-  GetCredentialsRepository,
-  UserExistsRepository,
+  FindUserByEmailRepository,
 } from "@/domain/repositories";
 import {
   appConfigFactory,
@@ -21,8 +20,7 @@ import {
 import { CreateUserController } from "@/infrastructure/http/controllers";
 import {
   DbCreateUserRepository,
-  DbGetCredentialsRepository,
-  DbUserExistsRepository,
+  DbFindUserByEmailRepository,
 } from "@/infrastructure/repositories";
 import {
   Argon2PasswordService,
@@ -35,12 +33,8 @@ const Repositories: Provider[] = [
     useClass: DbCreateUserRepository,
   },
   {
-    provide: GetCredentialsRepository,
-    useClass: DbGetCredentialsRepository,
-  },
-  {
-    provide: UserExistsRepository,
-    useClass: DbUserExistsRepository,
+    provide: FindUserByEmailRepository,
+    useClass: DbFindUserByEmailRepository,
   },
 ];
 

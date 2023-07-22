@@ -1,7 +1,6 @@
-import { WritableCredentialsProps } from "@/domain/models";
-
 export class LoginQuery {
   public constructor(
-    public readonly credentialsProps: WritableCredentialsProps,
+    public readonly email: string,
+    public readonly password: string,
   ) {}
 }

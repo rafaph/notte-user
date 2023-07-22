@@ -6,8 +6,8 @@ import { LoginQuery } from "@/application/queries";
 import { LoginResult } from "@/application/queries/results";
 import { PasswordService, TokenService } from "@/application/services";
 import { InvalidCredentialsError, LoginError } from "@/domain/errors";
-import { Credentials } from "@/domain/models";
-import { GetCredentialsRepository } from "@/domain/repositories";
+import { User } from "@/domain/models";
+import { FindUserByEmailRepository } from "@/domain/repositories";
 
 @QueryHandler(LoginQuery)
 export class LoginQueryHandler
@@ -16,7 +16,7 @@ export class LoginQueryHandler
   private readonly logger = new Logger(LoginQueryHandler.name);
 
   public constructor(
-    private readonly getCredentialsRepository: GetCredentialsRepository,
+    private readonly findUserByEmailRepository: FindUserByEmailRepository,
     private readonly passwordService: PasswordService,
     private readonly tokenService: TokenService,
   ) {}
@@ -27,9 +27,9 @@ export class LoginQueryHandler
     throw new LoginError();
   }
 
-  private async getCredentials(email: string): Promise<Option<Credentials>> {
+  private async getUser(email: string): Promise<Option<User>> {
     try {
-      return await this.getCredentialsRepository.get(email);
+      return await this.findUserByEmailRepository.findByEmail(email);
     } catch (error) {
       this.handleError(
         "Fail to get credentials on get credentials repository",
@@ -57,17 +57,16 @@ export class LoginQueryHandler
     }
   }
 
-  public async execute({ credentialsProps }: LoginQuery): Promise<LoginResult> {
-    const { email, password } = credentialsProps;
-    const credentialsOption = await this.getCredentials(email);
+  public async execute({ email, password }: LoginQuery): Promise<LoginResult> {
+    const userOption = await this.getUser(email);
 
-    if (!credentialsOption.isSome()) {
+    if (userOption.isNone()) {
       throw new InvalidCredentialsError();
     }
 
-    const credentials = credentialsOption.unwrap();
+    const user = userOption.unwrap();
     const isPasswordCorrect = await this.verifyPassword(
-      credentials.password,
+      user.password,
       password,
     );
 
@@ -75,7 +74,7 @@ export class LoginQueryHandler
       throw new InvalidCredentialsError();
     }
 
-    const token = await this.createToken(credentials.id);
+    const token = await this.createToken(user.id);
 
     return { token };
   }

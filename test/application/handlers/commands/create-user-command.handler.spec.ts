@@ -1,23 +1,25 @@
+import { Some } from "oxide.ts";
+
 import { CreateUserCommandHandler } from "@/application/handlers/commands";
 import { PasswordService } from "@/application/services";
 import { EmailAlreadyInUseError, UserCreationError } from "@/domain/errors";
 import {
   CreateUserRepository,
-  UserExistsRepository,
+  FindUserByEmailRepository,
 } from "@/domain/repositories";
 
-import { CreateUserCommandBuilder } from "@test/builders";
+import { CreateUserCommandBuilder, UserBuilder } from "@test/builders";
 import { disableLogs } from "@test/helpers";
 import {
   PasswordServiceMock,
   CreateUserRepositoryMock,
-  UserExistsRepositoryMock,
+  FindUserByEmailRepositoryMock,
 } from "@test/mocks";
 
 interface SutType {
   sut: CreateUserCommandHandler;
   deps: {
-    userExistsRepository: UserExistsRepository;
+    findUserByEmailRepository: FindUserByEmailRepository;
     createUserRepository: CreateUserRepository;
     passwordService: PasswordService;
   };
@@ -25,12 +27,12 @@ interface SutType {
 
 function makeSut(): SutType {
   const deps: SutType["deps"] = {
-    userExistsRepository: new UserExistsRepositoryMock(),
+    findUserByEmailRepository: new FindUserByEmailRepositoryMock(),
     createUserRepository: new CreateUserRepositoryMock(),
     passwordService: new PasswordServiceMock(),
   };
   const sut = new CreateUserCommandHandler(
-    deps.userExistsRepository,
+    deps.findUserByEmailRepository,
     deps.createUserRepository,
     deps.passwordService,
   );
@@ -58,9 +60,12 @@ describe(CreateUserCommandHandler.name, () => {
   it("should throw an EmailAlreadyInUseError", async () => {
     // given
     const { sut, deps } = makeSut();
-    const { userExistsRepository } = deps;
+    const { findUserByEmailRepository } = deps;
     const command = new CreateUserCommandBuilder().build();
-    jest.spyOn(userExistsRepository, "exists").mockResolvedValueOnce(true);
+    const user = new UserBuilder().build();
+    jest
+      .spyOn(findUserByEmailRepository, "findByEmail")
+      .mockResolvedValueOnce(Some(user));
 
     // when
     const execute = sut.execute(command);
@@ -72,9 +77,11 @@ describe(CreateUserCommandHandler.name, () => {
   it("should throw an UserCreationError when userExistsRepository fails", async () => {
     // given
     const { sut, deps } = makeSut();
-    const { userExistsRepository } = deps;
+    const { findUserByEmailRepository } = deps;
     const command = new CreateUserCommandBuilder().build();
-    jest.spyOn(userExistsRepository, "exists").mockRejectedValueOnce(undefined);
+    jest
+      .spyOn(findUserByEmailRepository, "findByEmail")
+      .mockRejectedValueOnce(undefined);
 
     // when
     const execute = sut.execute(command);

@@ -7,7 +7,7 @@ import { EmailAlreadyInUseError, UserCreationError } from "@/domain/errors";
 import { User, WritableUserProps } from "@/domain/models";
 import {
   CreateUserRepository,
-  UserExistsRepository,
+  FindUserByEmailRepository,
 } from "@/domain/repositories";
 
 @CommandHandler(CreateUserCommand)
@@ -17,14 +17,17 @@ export class CreateUserCommandHandler
   private readonly logger = new Logger(CreateUserCommandHandler.name);
 
   public constructor(
-    private readonly userExistsRepository: UserExistsRepository,
+    private readonly findUserByEmailRepository: FindUserByEmailRepository,
     private readonly createUserRepository: CreateUserRepository,
     private readonly passwordService: PasswordService,
   ) {}
 
   private async checkEmailInUse(email: string): Promise<boolean> {
     try {
-      return await this.userExistsRepository.exists(email);
+      const userOption = await this.findUserByEmailRepository.findByEmail(
+        email,
+      );
+      return userOption.isSome();
     } catch (error) {
       this.logger.error("Fail to check if user email is already in use", error);
       throw new UserCreationError();
@@ -56,9 +59,9 @@ export class CreateUserCommandHandler
 
   public async execute(command: CreateUserCommand): Promise<void> {
     const { userProps } = command;
-    const userExists = await this.checkEmailInUse(userProps.email);
+    const inUse = await this.checkEmailInUse(userProps.email);
 
-    if (userExists) {
+    if (inUse) {
       throw new EmailAlreadyInUseError();
     }
 
