@@ -26,6 +26,12 @@ export function appConfigFactory(): AppConfig {
         max: process.env.DATABASE_POOL_MAX,
       },
     },
+    jwt: {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+      algorithm: process.env.JWT_ALGORITHM,
+      publicKey: process.env.JWT_PUBLIC_KEY,
+      privateKey: process.env.JWT_PRIVATE_KEY,
+    },
   };
   const config = plainToInstance(AppConfig, plainConfig);
   const errors = validateSync(config);
@@ -36,7 +42,9 @@ export function appConfigFactory(): AppConfig {
     throw new InvalidConfigurationError();
   }
 
-  logger.log("Valid configuration, continuing...");
+  if (!config.logger.disabled) {
+    logger.log("Valid configuration, continuing...");
+  }
 
   return config;
 }

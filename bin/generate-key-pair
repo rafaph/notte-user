@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+const { generateKeyPairSync } = require('crypto');
+
+const { publicKey, privateKey } = generateKeyPairSync('ed25519');
+const publicKeyPEM = publicKey.export({ type: 'spki', format: 'pem' }).toString();
+const privateKeyPEM = privateKey.export({ type: 'pkcs8', format: 'pem' }).toString();
+
+console.log(publicKeyPEM);
+console.log(privateKeyPEM);
