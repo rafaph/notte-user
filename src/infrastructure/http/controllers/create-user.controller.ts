@@ -28,7 +28,7 @@ export class CreateUserController {
     } catch (error) {
       if (error instanceof EmailAlreadyInUseError) {
         throw new ConflictException(
-          `Email "${request.email}" is already in use by another user, please use another.`,
+          `Email "${request.email}" is already in use by another user.`,
         );
       }
 
