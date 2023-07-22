@@ -1,0 +1,113 @@
+import { CreateUserCommandHandler } from "@/application/handlers/commands";
+import { PasswordService } from "@/application/services";
+import { EmailAlreadyInUseError, UserCreationError } from "@/domain/errors";
+import {
+  CreateUserRepository,
+  UserExistsRepository,
+} from "@/domain/repositories";
+
+import { CreateUserCommandBuilder } from "@test/builders";
+import { disableLogs } from "@test/helpers";
+import {
+  PasswordServiceMock,
+  CreateUserRepositoryMock,
+  UserExistsRepositoryMock,
+} from "@test/mocks";
+
+interface SutType {
+  sut: CreateUserCommandHandler;
+  deps: {
+    userExistsRepository: UserExistsRepository;
+    createUserRepository: CreateUserRepository;
+    passwordService: PasswordService;
+  };
+}
+
+function makeSut(): SutType {
+  const deps: SutType["deps"] = {
+    userExistsRepository: new UserExistsRepositoryMock(),
+    createUserRepository: new CreateUserRepositoryMock(),
+    passwordService: new PasswordServiceMock(),
+  };
+  const sut = new CreateUserCommandHandler(
+    deps.userExistsRepository,
+    deps.createUserRepository,
+    deps.passwordService,
+  );
+
+  disableLogs(sut);
+
+  return { sut, deps };
+}
+
+describe(CreateUserCommandHandler.name, () => {
+  it("should create an user", async () => {
+    // given
+    const { sut, deps } = makeSut();
+    const { createUserRepository } = deps;
+    const command = new CreateUserCommandBuilder().build();
+    const createSpy = jest.spyOn(createUserRepository, "create");
+
+    // when
+    await sut.execute(command);
+
+    // then
+    expect(createSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("should throw an EmailAlreadyInUseError", async () => {
+    // given
+    const { sut, deps } = makeSut();
+    const { userExistsRepository } = deps;
+    const command = new CreateUserCommandBuilder().build();
+    jest.spyOn(userExistsRepository, "exists").mockResolvedValueOnce(true);
+
+    // when
+    const execute = sut.execute(command);
+
+    // then
+    await expect(execute).rejects.toBeInstanceOf(EmailAlreadyInUseError);
+  });
+
+  it("should throw an UserCreationError when userExistsRepository fails", async () => {
+    // given
+    const { sut, deps } = makeSut();
+    const { userExistsRepository } = deps;
+    const command = new CreateUserCommandBuilder().build();
+    jest.spyOn(userExistsRepository, "exists").mockRejectedValueOnce(undefined);
+
+    // when
+    const execute = sut.execute(command);
+
+    // then
+    await expect(execute).rejects.toBeInstanceOf(UserCreationError);
+  });
+
+  it("should throw an UserCreationError when passwordHasher fails", async () => {
+    // given
+    const { sut, deps } = makeSut();
+    const { passwordService } = deps;
+    const command = new CreateUserCommandBuilder().build();
+    jest.spyOn(passwordService, "hash").mockRejectedValueOnce(undefined);
+
+    // when
+    const execute = sut.execute(command);
+
+    // then
+    await expect(execute).rejects.toBeInstanceOf(UserCreationError);
+  });
+
+  it("should throw an UserCreationError when createUserRepository fails", async () => {
+    // given
+    const { sut, deps } = makeSut();
+    const { createUserRepository } = deps;
+    const command = new CreateUserCommandBuilder().build();
+    jest.spyOn(createUserRepository, "create").mockRejectedValueOnce(undefined);
+
+    // when
+    const execute = sut.execute(command);
+
+    // then
+    await expect(execute).rejects.toBeInstanceOf(UserCreationError);
+  });
+});
