@@ -16,7 +16,7 @@ import {
   FindUserByEmailRepositoryMock,
 } from "@test/mocks";
 
-interface SutType {
+interface Sut {
   sut: CreateUserCommandHandler;
   deps: {
     findUserByEmailRepository: FindUserByEmailRepository;
@@ -25,8 +25,8 @@ interface SutType {
   };
 }
 
-function makeSut(): SutType {
-  const deps: SutType["deps"] = {
+function makeSut(): Sut {
+  const deps: Sut["deps"] = {
     findUserByEmailRepository: new FindUserByEmailRepositoryMock(),
     createUserRepository: new CreateUserRepositoryMock(),
     passwordService: new PasswordServiceMock(),
