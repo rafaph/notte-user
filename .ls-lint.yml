@@ -14,6 +14,8 @@ ls:
   .repository.spec.ts: kebab-case
   .request.ts: kebab-case
   .request.spec.ts: kebab-case
+  .response.ts: kebab-case
+  .response.spec.ts: kebab-case
   .validator.ts: kebab-case
   .validator.spec.ts: kebab-case
   .error.ts: kebab-case
