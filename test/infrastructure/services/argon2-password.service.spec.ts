@@ -3,6 +3,8 @@ import * as argon2 from "argon2";
 
 import { Argon2PasswordService } from "@/infrastructure/services";
 
+import { AppConfigBuilder } from "@test/builders/app-config.builder";
+
 jest.mock("argon2", () => ({
   hash: jest.fn((password: string) => Promise.resolve(`hashed_${password}`)),
   verify: jest.fn((hash: string, password: string) =>
@@ -11,7 +13,8 @@ jest.mock("argon2", () => ({
 }));
 
 function makeSut(): Argon2PasswordService {
-  return new Argon2PasswordService();
+  const config = new AppConfigBuilder().build();
+  return new Argon2PasswordService(config);
 }
 
 describe(Argon2PasswordService.name, () => {
@@ -25,7 +28,7 @@ describe(Argon2PasswordService.name, () => {
 
     // then
     expect(hashedPassword).toBe(`hashed_${password}`);
-    expect(argon2.hash).toHaveBeenCalledWith(password);
+    expect(argon2.hash).toHaveBeenCalledWith(password, expect.anything());
   });
 
   it("should verify a password", async () => {
@@ -39,7 +42,11 @@ describe(Argon2PasswordService.name, () => {
 
     // then
     expect(isPasswordValid).toBe(true);
-    expect(argon2.verify).toHaveBeenCalledWith(hashedPassword, password);
+    expect(argon2.verify).toHaveBeenCalledWith(
+      hashedPassword,
+      password,
+      expect.anything(),
+    );
   });
 
   it("should reject an invalid password", async () => {
@@ -54,6 +61,10 @@ describe(Argon2PasswordService.name, () => {
 
     // then
     expect(isPasswordValid).toBe(false);
-    expect(argon2.verify).toHaveBeenCalledWith(hashedPassword, invalidPassword);
+    expect(argon2.verify).toHaveBeenCalledWith(
+      hashedPassword,
+      invalidPassword,
+      expect.anything(),
+    );
   });
 });

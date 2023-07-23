@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Type } from "class-transformer";
 import { IsIn, IsIP, IsPort, ValidateNested } from "class-validator";
 
+import { Argon2Config } from "@/config/argon2.config";
 import { DatabaseConfig } from "@/config/database.config";
 import { JwtConfig } from "@/config/jwt.config";
 import { LoggerConfig } from "@/config/logger.config";
@@ -28,4 +29,8 @@ export class AppConfig {
   @ValidateNested()
   @Type(() => JwtConfig)
   public readonly jwt!: JwtConfig;
+
+  @ValidateNested()
+  @Type(() => Argon2Config)
+  public readonly argon2!: Argon2Config;
 }

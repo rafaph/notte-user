@@ -32,6 +32,9 @@ export function appConfigFactory(): AppConfig {
       publicKey: process.env.JWT_PUBLIC_KEY,
       privateKey: process.env.JWT_PRIVATE_KEY,
     },
+    argon2: {
+      secret: process.env.ARGON2_SECRET,
+    },
   };
   const config = plainToInstance(AppConfig, plainConfig);
   const errors = validateSync(config);
