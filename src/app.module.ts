@@ -28,6 +28,7 @@ import {
 import {
   CreateUserController,
   LoginController,
+  UpdateUserController,
 } from "@/infrastructure/http/controllers";
 import { JwtAuthGuard } from "@/infrastructure/http/guards";
 import {
@@ -104,6 +105,7 @@ const Providers: ModuleMetadata["providers"] = [
 const Controllers: ModuleMetadata["controllers"] = [
   CreateUserController,
   LoginController,
+  UpdateUserController,
 ];
 
 @Global()

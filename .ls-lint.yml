@@ -16,6 +16,8 @@ ls:
   .request.spec.ts: kebab-case
   .response.ts: kebab-case
   .response.spec.ts: kebab-case
+  .decorator.ts: kebab-case
+  .decorator.spec.ts: kebab-case
   .validator.ts: kebab-case
   .validator.spec.ts: kebab-case
   .error.ts: kebab-case
