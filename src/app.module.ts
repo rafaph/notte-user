@@ -4,7 +4,10 @@ import { CqrsModule } from "@nestjs/cqrs";
 import { KnexModule } from "nest-knexjs";
 import { LoggerModule } from "nestjs-pino";
 
-import { CreateUserCommandHandler } from "@/application/handlers/commands";
+import {
+  CreateUserCommandHandler,
+  UpdateUserCommandHandler,
+} from "@/application/handlers/commands";
 import {
   LoginQueryHandler,
   VerifyTokenQueryHandler,
@@ -61,6 +64,7 @@ const Handlers: Provider[] = [
   CreateUserCommandHandler,
   LoginQueryHandler,
   VerifyTokenQueryHandler,
+  UpdateUserCommandHandler,
 ];
 
 const Services: Provider[] = [

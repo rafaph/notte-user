@@ -3,9 +3,14 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { Option } from "oxide.ts";
 
 import { UpdateUserCommand } from "@/application/commands";
-import { UserNotFoundError, UserUpdateError } from "@/domain/errors";
+import {
+  EmailAlreadyInUseError,
+  UserNotFoundError,
+  UserUpdateError,
+} from "@/domain/errors";
 import { User } from "@/domain/models";
 import {
+  FindUserByEmailRepository,
   FindUserByIdRepository,
   UpdateUserRepository,
 } from "@/domain/repositories";
@@ -18,6 +23,7 @@ export class UpdateUserCommandHandler
 
   public constructor(
     private readonly findUserByIdRepository: FindUserByIdRepository,
+    private readonly findUserByEmailRepository: FindUserByEmailRepository,
     private readonly updateUserRepository: UpdateUserRepository,
   ) {}
 
@@ -43,6 +49,24 @@ export class UpdateUserCommandHandler
     }
   }
 
+  private async canUpdate(
+    user: User,
+    userProps: UpdateUserCommand["userProps"],
+  ): Promise<boolean> {
+    if (user.email === userProps.email) {
+      return true;
+    }
+
+    try {
+      const userOption = await this.findUserByEmailRepository.findByEmail(
+        userProps.email,
+      );
+      return userOption.isNone();
+    } catch (error) {
+      this.handleError("Fail to check if user email is already in use", error);
+    }
+  }
+
   public async execute({ userProps }: UpdateUserCommand): Promise<void> {
     const userOption = await this.findUserById(userProps.id);
 
@@ -51,8 +75,13 @@ export class UpdateUserCommandHandler
     }
 
     const user = userOption.unwrap();
-    user.update(userProps);
+    const canUpdate = await this.canUpdate(user, userProps);
 
+    if (!canUpdate) {
+      throw new EmailAlreadyInUseError();
+    }
+
+    user.update(userProps);
     await this.updateUser(user);
   }
 }
