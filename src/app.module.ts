@@ -5,7 +5,10 @@ import { KnexModule } from "nest-knexjs";
 import { LoggerModule } from "nestjs-pino";
 
 import { CreateUserCommandHandler } from "@/application/handlers/commands";
-import { LoginQueryHandler } from "@/application/handlers/queries";
+import {
+  LoginQueryHandler,
+  VerifyTokenQueryHandler,
+} from "@/application/handlers/queries";
 import { PasswordService, TokenService } from "@/application/services";
 import { AppConfig } from "@/config";
 import {
@@ -21,6 +24,7 @@ import {
   CreateUserController,
   LoginController,
 } from "@/infrastructure/http/controllers";
+import { JwtAuthGuard } from "@/infrastructure/http/guards";
 import {
   DbCreateUserRepository,
   DbFindUserByEmailRepository,
@@ -41,7 +45,11 @@ const Repositories: Provider[] = [
   },
 ];
 
-const Handlers: Provider[] = [CreateUserCommandHandler, LoginQueryHandler];
+const Handlers: Provider[] = [
+  CreateUserCommandHandler,
+  LoginQueryHandler,
+  VerifyTokenQueryHandler,
+];
 
 const Services: Provider[] = [
   {
@@ -71,6 +79,7 @@ const Providers: ModuleMetadata["providers"] = [
     provide: AppConfig,
     useFactory: appConfigFactory,
   },
+  JwtAuthGuard,
   ...Repositories,
   ...Services,
   ...Handlers,
