@@ -14,6 +14,8 @@ import { AppConfig } from "@/config";
 import {
   CreateUserRepository,
   FindUserByEmailRepository,
+  FindUserByIdRepository,
+  UpdateUserRepository,
 } from "@/domain/repositories";
 import {
   appConfigFactory,
@@ -28,6 +30,8 @@ import { JwtAuthGuard } from "@/infrastructure/http/guards";
 import {
   DbCreateUserRepository,
   DbFindUserByEmailRepository,
+  DbFindUserByIdRepository,
+  DbUpdateUserRepository,
 } from "@/infrastructure/repositories";
 import {
   Argon2PasswordService,
@@ -42,6 +46,14 @@ const Repositories: Provider[] = [
   {
     provide: FindUserByEmailRepository,
     useClass: DbFindUserByEmailRepository,
+  },
+  {
+    provide: FindUserByIdRepository,
+    useClass: DbFindUserByIdRepository,
+  },
+  {
+    provide: UpdateUserRepository,
+    useClass: DbUpdateUserRepository,
   },
 ];
 
