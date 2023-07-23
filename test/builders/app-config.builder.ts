@@ -1,9 +1,7 @@
 import { AppConfig } from "@/config";
 import { appConfigFactory } from "@/factories";
 
-type InterfaceOf<T> = {
-  -readonly [P in keyof T]: T[P];
-};
+import { InterfaceOf } from "@test/helpers";
 
 export class AppConfigBuilder {
   private readonly props: InterfaceOf<AppConfig>;

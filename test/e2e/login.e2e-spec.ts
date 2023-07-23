@@ -49,6 +49,16 @@ describe("POST /api/v1/user/login", () => {
     });
   });
 
+  it("should response BAD_REQUEST", async () => {
+    await new TestApp().run(async (app) => {
+      //given/when
+      const response = await makeRequest(app, {});
+
+      // then
+      expect(response.status).toBe(HttpStatus.BAD_REQUEST);
+    });
+  });
+
   it("should response UNAUTHORIZED when user is not found", async () => {
     await new TestApp().run(async (app) => {
       // given

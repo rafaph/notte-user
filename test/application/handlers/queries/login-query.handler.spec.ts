@@ -13,8 +13,8 @@ import { disableLogs } from "@test/helpers";
 import {
   FindUserByEmailRepositoryMock,
   PasswordServiceMock,
+  TokenServiceMock,
 } from "@test/mocks";
-import { TokenServiceMock } from "@test/mocks/token-service.mock";
 
 interface Sut {
   sut: LoginQueryHandler;
