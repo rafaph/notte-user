@@ -1,6 +1,5 @@
 import { execSync } from "child_process";
 import { randomUUID } from "crypto";
-import * as process from "process";
 
 import { default as knex, Knex } from "knex";
 import { createConnection } from "mysql2/promise";

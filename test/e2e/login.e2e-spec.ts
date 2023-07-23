@@ -3,14 +3,12 @@ import { Server } from "http";
 import { faker } from "@faker-js/faker";
 import { HttpStatus, INestApplication } from "@nestjs/common";
 import { QueryBus } from "@nestjs/cqrs";
-import { Knex } from "knex";
-import { DEFAULT_CONNECTION_NAME } from "nest-knexjs/dist/knex.constants";
 import * as request from "supertest";
 
 import { PasswordService } from "@/application/services";
 
 import { LoginRequestBuilder, UserBuilder } from "@test/builders";
-import { TestApp } from "@test/helpers";
+import { TestApp, TestUtils } from "@test/helpers";
 import { insertUser } from "@test/infrastructure/repositories/helpers";
 
 function makeRequest(
@@ -29,7 +27,7 @@ describe("POST /api/v1/user/login", () => {
   it("should response OK", async () => {
     await new TestApp().run(async (app) => {
       // given
-      const knex: Knex = app.get(DEFAULT_CONNECTION_NAME);
+      const { knex } = app.get(TestUtils);
       const passwordService = app.get(PasswordService);
       const password = faker.internet.password();
       const hashedPassword = await passwordService.hash(password);
@@ -75,7 +73,7 @@ describe("POST /api/v1/user/login", () => {
   it("should response UNAUTHORIZED when password is not correct", async () => {
     await new TestApp().run(async (app) => {
       // given
-      const knex: Knex = app.get(DEFAULT_CONNECTION_NAME);
+      const { knex } = app.get(TestUtils);
       const passwordService = app.get(PasswordService);
       const hashedPassword = await passwordService.hash(
         faker.internet.password(),

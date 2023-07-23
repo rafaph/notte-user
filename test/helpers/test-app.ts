@@ -8,6 +8,7 @@ import { App } from "@/app";
 import { AppModule } from "@/app.module";
 
 import { TestDb } from "@test/helpers/test-db";
+import { TestUtils } from "@test/helpers/test-utils";
 
 export class TestApp extends App {
   private readonly testDb = new TestDb();
@@ -15,6 +16,7 @@ export class TestApp extends App {
   protected async init(): Promise<void> {
     const testingModule = await Test.createTestingModule({
       imports: [AppModule],
+      providers: [TestUtils],
     })
       .overrideProvider(DEFAULT_CONNECTION_NAME)
       .useValue(this.testDb.knex)

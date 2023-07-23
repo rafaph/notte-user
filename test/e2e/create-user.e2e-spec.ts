@@ -2,14 +2,12 @@ import { Server } from "http";
 
 import { faker } from "@faker-js/faker";
 import { HttpStatus, INestApplication } from "@nestjs/common";
-import { Knex } from "knex";
-import { DEFAULT_CONNECTION_NAME } from "nest-knexjs/dist/knex.constants";
 import * as request from "supertest";
 
 import { CreateUserRepository } from "@/domain/repositories";
 
-import { UserBuilder, CreateUserRequestBuilder } from "@test/builders";
-import { TestApp } from "@test/helpers";
+import { CreateUserRequestBuilder, UserBuilder } from "@test/builders";
+import { TestApp, TestUtils } from "@test/helpers";
 import { insertUser } from "@test/infrastructure/repositories/helpers";
 
 function makeRequest(
@@ -70,7 +68,7 @@ describe("POST /api/v1/user", () => {
       const request = new CreateUserRequestBuilder()
         .withEmail(user.email)
         .build();
-      const knex: Knex = app.get(DEFAULT_CONNECTION_NAME);
+      const { knex } = app.get(TestUtils);
       await insertUser(knex, user);
 
       // when
