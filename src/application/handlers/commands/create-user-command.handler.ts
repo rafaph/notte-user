@@ -22,6 +22,12 @@ export class CreateUserCommandHandler
     private readonly passwordService: PasswordService,
   ) {}
 
+  private handleError(message: string, error: unknown): never {
+    this.logger.error(message, error);
+
+    throw new UserCreationError();
+  }
+
   private async checkEmailInUse(email: string): Promise<boolean> {
     try {
       const userOption = await this.findUserByEmailRepository.findByEmail(
@@ -29,8 +35,7 @@ export class CreateUserCommandHandler
       );
       return userOption.isSome();
     } catch (error) {
-      this.logger.error("Fail to check if user email is already in use", error);
-      throw new UserCreationError();
+      this.handleError("Fail to check if user email is already in use", error);
     }
   }
 
@@ -38,8 +43,7 @@ export class CreateUserCommandHandler
     try {
       return await this.passwordService.hash(password);
     } catch (error) {
-      this.logger.error("Fail to hash user password", error);
-      throw new UserCreationError();
+      this.handleError("Fail to hash user password", error);
     }
   }
 
@@ -52,8 +56,7 @@ export class CreateUserCommandHandler
     try {
       return await this.createUserRepository.create(user);
     } catch (error) {
-      this.logger.error("Fail to create user on repository", error);
-      throw new UserCreationError();
+      this.handleError("Fail to create user on repository", error);
     }
   }
 

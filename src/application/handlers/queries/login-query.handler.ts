@@ -21,7 +21,7 @@ export class LoginQueryHandler
     private readonly tokenService: TokenService,
   ) {}
 
-  private handleError(message: string, error: Error): never {
+  private handleError(message: string, error: unknown): never {
     this.logger.error(message, error);
 
     throw new LoginError();
@@ -33,7 +33,7 @@ export class LoginQueryHandler
     } catch (error) {
       this.handleError(
         "Fail to get credentials on get credentials repository",
-        error as Error,
+        error,
       );
     }
   }
@@ -45,7 +45,7 @@ export class LoginQueryHandler
     try {
       return await this.passwordService.verify(hash, password);
     } catch (error) {
-      this.handleError("Fail to verify hash and password", error as Error);
+      this.handleError("Fail to verify hash and password", error);
     }
   }
 
@@ -53,7 +53,7 @@ export class LoginQueryHandler
     try {
       return await this.tokenService.sign(id);
     } catch (error) {
-      this.handleError("Fail to sign id to token", error as Error);
+      this.handleError("Fail to sign id to token", error);
     }
   }
 
