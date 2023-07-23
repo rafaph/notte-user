@@ -32,6 +32,8 @@ ls:
   .transform.spec.ts: kebab-case
   .factory.ts: kebab-case
   .factory.spec.ts: kebab-case
+  .guard.ts: kebab-case
+  .guard.spec.ts: kebab-case
   .e2e-spec.ts: kebab-case
   .builder.ts: kebab-case
   .setup.ts: kebab-case
