@@ -1,8 +1,10 @@
 import { Logger } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { omit } from "lodash";
 import { Option } from "oxide.ts";
 
 import { UpdateUserCommand } from "@/application/commands";
+import { PasswordService } from "@/application/services";
 import {
   EmailAlreadyInUseError,
   UserNotFoundError,
@@ -25,12 +27,21 @@ export class UpdateUserCommandHandler
     private readonly findUserByIdRepository: FindUserByIdRepository,
     private readonly findUserByEmailRepository: FindUserByEmailRepository,
     private readonly updateUserRepository: UpdateUserRepository,
+    private readonly passwordService: PasswordService,
   ) {}
 
   private handleError(message: string, error: unknown): never {
     this.logger.error(message, error);
 
     throw new UserUpdateError();
+  }
+
+  private async hashPassword(password: string): Promise<string> {
+    try {
+      return await this.passwordService.hash(password);
+    } catch (error) {
+      this.handleError("Fail to hash user password", error);
+    }
   }
 
   private async findUserById(id: string): Promise<Option<User>> {
@@ -49,11 +60,11 @@ export class UpdateUserCommandHandler
     }
   }
 
-  private async canUpdate(
+  private async canUpdateEmail(
     user: User,
     userProps: UpdateUserCommand["userProps"],
   ): Promise<boolean> {
-    if (user.email === userProps.email) {
+    if (!userProps.email || user.email === userProps.email) {
       return true;
     }
 
@@ -75,13 +86,18 @@ export class UpdateUserCommandHandler
     }
 
     const user = userOption.unwrap();
-    const canUpdate = await this.canUpdate(user, userProps);
+    const canUpdateEmail = await this.canUpdateEmail(user, userProps);
 
-    if (!canUpdate) {
+    if (!canUpdateEmail) {
       throw new EmailAlreadyInUseError();
     }
 
-    user.update(userProps);
+    if (userProps.password) {
+      userProps.password = await this.hashPassword(userProps.password);
+    }
+
+    user.update(omit(userProps, ["id"]));
+
     await this.updateUser(user);
   }
 }
