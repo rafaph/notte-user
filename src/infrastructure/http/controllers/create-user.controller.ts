@@ -9,6 +9,7 @@ import {
 } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
 
+import { CreateUserCommand } from "@/application/commands";
 import { EmailAlreadyInUseError } from "@/domain/errors";
 import { CreateUserRequest } from "@/infrastructure/http/requests";
 
@@ -24,7 +25,7 @@ export class CreateUserController {
     const command = request.toCommand();
 
     try {
-      await this.commandBus.execute(command);
+      await this.commandBus.execute<CreateUserCommand>(command);
     } catch (error) {
       if (error instanceof EmailAlreadyInUseError) {
         throw new ConflictException(

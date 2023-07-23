@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 export { EmailAlreadyInUseError } from "@/domain/errors/email-already-in-use.error";
 export { InvalidConfigurationError } from "@/domain/errors/invalid-configuration.error";
 export { UserCreationError } from "@/domain/errors/user-creation.error";

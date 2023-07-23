@@ -17,7 +17,10 @@ import {
   knexModuleFactory,
   loggerModuleFactory,
 } from "@/factories";
-import { CreateUserController } from "@/infrastructure/http/controllers";
+import {
+  CreateUserController,
+  LoginController,
+} from "@/infrastructure/http/controllers";
 import {
   DbCreateUserRepository,
   DbFindUserByEmailRepository,
@@ -73,7 +76,10 @@ const Providers: ModuleMetadata["providers"] = [
   ...Handlers,
 ];
 
-const Controllers: ModuleMetadata["controllers"] = [CreateUserController];
+const Controllers: ModuleMetadata["controllers"] = [
+  CreateUserController,
+  LoginController,
+];
 
 @Global()
 @Module({
