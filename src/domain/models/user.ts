@@ -36,7 +36,7 @@ export class User implements UserProps {
     this.createdAt = setMilliseconds(props.createdAt, 0);
   }
 
-  public update(props: WritableUserProps): void {
+  public update(props: Partial<WritableUserProps>): void {
     Object.assign(this, {
       ...props,
       updatedAt: setMilliseconds(new Date(), 0),
