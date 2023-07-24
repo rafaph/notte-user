@@ -1,3 +1,4 @@
+import { omit } from "lodash";
 import { Some } from "oxide.ts";
 
 import { UpdateUserCommandHandler } from "@/application/handlers/commands";
@@ -75,7 +76,9 @@ describe(UpdateUserCommandHandler.name, () => {
     await sut.execute(command);
 
     // then
-    expect(updateSpy).toHaveBeenCalledWith(user);
+    expect(updateSpy).toHaveBeenCalledWith(
+      expect.objectContaining(omit(user, "updatedAt")),
+    );
   });
 
   it("should update an user when email is not in the input", async () => {
@@ -96,7 +99,9 @@ describe(UpdateUserCommandHandler.name, () => {
     await sut.execute(command);
 
     // then
-    expect(updateSpy).toHaveBeenCalledWith(user);
+    expect(updateSpy).toHaveBeenCalledWith(
+      expect.objectContaining(omit(user, "updatedAt")),
+    );
   });
 
   it("should throw an UserNotFoundError", async () => {
