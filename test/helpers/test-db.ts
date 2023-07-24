@@ -1,4 +1,4 @@
-import { execSync } from "child_process";
+import { exec } from "child_process";
 import { randomUUID } from "crypto";
 
 import { default as knex, Knex } from "knex";
@@ -31,15 +31,24 @@ const dropDatabase = (database: string): Promise<void> => {
   return makeQuery(`DROP DATABASE IF EXISTS ${database};`);
 };
 
-const createTables = async (databaseName: string): Promise<void> => {
-  execSync("bin/migrate", {
-    env: {
-      ...process.env,
-      DATABASE_NAME: databaseName,
-    },
-    stdio: "ignore",
+const createTables = (databaseName: string): Promise<void> =>
+  new Promise((resolve, reject) => {
+    exec(
+      "bin/migrate",
+      {
+        env: {
+          ...process.env,
+          DATABASE_NAME: databaseName,
+        },
+      },
+      (error) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve();
+      },
+    );
   });
-};
 
 export class TestDb {
   private readonly name = `test_${randomUUID().toString().replaceAll("-", "")}`;

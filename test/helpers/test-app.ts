@@ -35,7 +35,7 @@ export class TestApp extends App {
   }
 
   private async down(): Promise<void> {
-    await this.app.close();
+    await this.app?.close();
     await this.testDb.down();
   }
 
