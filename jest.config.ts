@@ -12,7 +12,6 @@ const config: Config = {
   moduleFileExtensions: ["js", "json", "ts"],
   rootDir: ".",
   testRegex: ".*\\.(e2e-)?spec\\.ts$",
-  preset: "ts-jest",
   collectCoverageFrom: ["src/**/*.(t|j)s"],
   coverageDirectory: "coverage",
   testEnvironment: "node",
@@ -20,8 +19,8 @@ const config: Config = {
     prefix: "<rootDir>/",
   }),
   setupFiles: ["<rootDir>/test/jest.setup.ts"],
-  globals: {
-    "ts-jest": { isolatedModules },
+  transform: {
+    "^.+\\.tsx?$": ["ts-jest", { isolatedModules }],
   },
 };
 
