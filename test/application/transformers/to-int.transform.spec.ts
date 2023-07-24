@@ -2,16 +2,13 @@ import { faker } from "@faker-js/faker";
 
 import { toInt } from "@/application/transformers";
 
-const cases = Array.from(
-  { length: faker.number.int({ min: 5, max: 10 }) },
-  () => {
-    const value = faker.number.int({ min: 1, max: 100000 });
-    return {
-      value: value.toString(10),
-      expected: value,
-    };
-  },
-);
+const cases = Array.from({ length: 10 }, () => {
+  const value = faker.number.int({ min: 1, max: 100000 });
+  return {
+    value: value.toString(10),
+    expected: value,
+  };
+});
 
 describe("to-int.transform", () => {
   test.each(cases)(
