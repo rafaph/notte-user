@@ -5,3 +5,4 @@ export { LoginRequestBuilder } from "@test/builders/login-request.builder";
 export { ExecutionContextBuilder } from "@test/builders/execution-context.builder";
 export { VerifyTokenQueryBuilder } from "@test/builders/verify-token-query.builder";
 export { UpdateUserCommandBuilder } from "@test/builders/update-user-command.builder";
+export { UpdateUserRequestBuilder } from "@test/builders/update-user-request.builder";
