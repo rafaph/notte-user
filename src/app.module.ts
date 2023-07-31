@@ -6,6 +6,7 @@ import { LoggerModule } from "nestjs-pino";
 
 import {
   CreateUserCommandHandler,
+  DeleteUserCommandHandler,
   UpdateUserCommandHandler,
 } from "@/application/handlers/commands";
 import {
@@ -16,6 +17,7 @@ import { PasswordService, TokenService } from "@/application/services";
 import { AppConfig } from "@/config";
 import {
   CreateUserRepository,
+  DeleteUserRepository,
   FindUserByEmailRepository,
   FindUserByIdRepository,
   UpdateUserRepository,
@@ -27,12 +29,14 @@ import {
 } from "@/factories";
 import {
   CreateUserController,
+  DeleteUserController,
   LoginController,
   UpdateUserController,
 } from "@/infrastructure/http/controllers";
 import { JwtAuthGuard } from "@/infrastructure/http/guards";
 import {
   DbCreateUserRepository,
+  DbDeleteUserRepository,
   DbFindUserByEmailRepository,
   DbFindUserByIdRepository,
   DbUpdateUserRepository,
@@ -59,6 +63,10 @@ const Repositories: Provider[] = [
     provide: UpdateUserRepository,
     useClass: DbUpdateUserRepository,
   },
+  {
+    provide: DeleteUserRepository,
+    useClass: DbDeleteUserRepository,
+  },
 ];
 
 const Handlers: Provider[] = [
@@ -66,6 +74,7 @@ const Handlers: Provider[] = [
   LoginQueryHandler,
   VerifyTokenQueryHandler,
   UpdateUserCommandHandler,
+  DeleteUserCommandHandler,
 ];
 
 const Services: Provider[] = [
@@ -106,6 +115,7 @@ const Controllers: ModuleMetadata["controllers"] = [
   CreateUserController,
   LoginController,
   UpdateUserController,
+  DeleteUserController,
 ];
 
 @Global()

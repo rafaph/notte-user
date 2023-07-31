@@ -9,3 +9,4 @@ export { TokenVerificationError } from "@/domain/errors/token-verification.error
 export { InvalidTokenError } from "@/domain/errors/invalid-token.error";
 export { UserUpdateError } from "@/domain/errors/user-update.error";
 export { UserNotFoundError } from "@/domain/errors/user-not-found.error";
+export { UserDeleteError } from "@/domain/errors/user-delete.error";
