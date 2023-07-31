@@ -23,7 +23,7 @@ module.exports = {
   },
   env: {
     node: true,
-    mocha: true,
+    jest: true,
   },
   rules: {
     "@typescript-eslint/require-await": "off",
@@ -56,6 +56,14 @@ module.exports = {
         "newlines-between": "always",
       },
     ],
+    "@typescript-eslint/explicit-member-accessibility": "error"
   },
-  ignorePatterns: [".eslintrc.js", "scripts", "nyc.config.js", "dist"],
+  ignorePatterns: [
+    ".eslintrc.js",
+    "dist",
+    "node_modules",
+    ".husky",
+    "bin",
+    "database"
+  ],
 };

@@ -1,23 +1,11 @@
-import "reflect-metadata";
-import { Pool } from "pg";
+/* istanbul ignore file */
 
-import { Server } from "@/infra/http/interfaces/server";
-import { makeContainer } from "@/ioc/make-container";
-import { Logger } from "@/lib/logger";
+import { App } from "@/app";
 
-const container = makeContainer();
-const server = container.get<Server>(Server);
-void server.listen();
+async function main() {
+  const app = await App.create();
 
-const exitHandler = () => {
-  Logger.info("Shutting down...");
+  await app.listen();
+}
 
-  server.close();
-  const pool = container.get<Pool>(Pool);
-  if (pool.totalCount > 0) {
-    void pool.end();
-  }
-};
-
-process.on("SIGINT", exitHandler);
-process.on("SIGTERM", exitHandler);
+void main();

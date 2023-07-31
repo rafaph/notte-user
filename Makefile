@@ -8,7 +8,7 @@ build:
 
 .PHONY: up
 up:
-	$(call compose,up user && $(call down))
+	$(call compose,up mysql -d)
 
 .PHONY: shell
 shell:

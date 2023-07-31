@@ -4,6 +4,42 @@ ls:
   .d.ts: kebab-case
   .spec.ts: kebab-case
   .config.ts: kebab-case
+  .config.spec.ts: kebab-case
+  .controller.ts: kebab-case
+  .controller.spec.ts: kebab-case
+  .module.ts: kebab-case
+  .service.ts: kebab-case
+  .service.spec.ts: kebab-case
+  .repository.ts: kebab-case
+  .repository.spec.ts: kebab-case
+  .request.ts: kebab-case
+  .request.spec.ts: kebab-case
+  .response.ts: kebab-case
+  .response.spec.ts: kebab-case
+  .decorator.ts: kebab-case
+  .decorator.spec.ts: kebab-case
+  .validator.ts: kebab-case
+  .validator.spec.ts: kebab-case
+  .error.ts: kebab-case
+  .error.spec.ts: kebab-case
+  .handler.ts: kebab-case
+  .handler.spec.ts: kebab-case
+  .command.ts: kebab-case
+  .command.spec.ts: kebab-case
+  .query.ts: kebab-case
+  .query.spec.ts: kebab-case
+  .result.ts: kebab-case
+  .result.spec.ts: kebab-case
+  .transform.ts: kebab-case
+  .transform.spec.ts: kebab-case
+  .factory.ts: kebab-case
+  .factory.spec.ts: kebab-case
+  .guard.ts: kebab-case
+  .guard.spec.ts: kebab-case
+  .e2e-spec.ts: kebab-case
+  .builder.ts: kebab-case
+  .setup.ts: kebab-case
+  .mock.ts: kebab-case
 
 ignore:
   - .git
@@ -12,5 +48,3 @@ ignore:
   - node_modules
   - .idea
   - .husky
-  - .nyc_output
-  - types/mocha.parallel
