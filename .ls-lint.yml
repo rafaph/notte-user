@@ -40,6 +40,10 @@ ls:
   .builder.ts: kebab-case
   .setup.ts: kebab-case
   .mock.ts: kebab-case
+  .filter.ts: kebab-case
+  .interceptor.ts: kebab-case
+  .mapper.ts: kebab-case
+  .interface.ts: kebab-case
 
 ignore:
   - .git

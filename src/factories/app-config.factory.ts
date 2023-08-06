@@ -1,4 +1,3 @@
-import { Logger } from "@nestjs/common";
 import { plainToInstance } from "class-transformer";
 import { validateSync } from "class-validator";
 
@@ -6,7 +5,6 @@ import { AppConfig } from "@/config";
 import { InvalidConfigurationError } from "@/domain/errors";
 
 export function appConfigFactory(): AppConfig {
-  const logger = new Logger(AppConfig.name);
   const plainConfig = {
     env: process.env.NODE_ENV,
     port: process.env.PORT,
@@ -41,13 +39,8 @@ export function appConfigFactory(): AppConfig {
 
   /* istanbul ignore next */
   if (errors.length > 0) {
-    logger.error("Invalid configuration, errors = ", errors);
+    console.error("Invalid configuration, errors = ", errors);
     throw new InvalidConfigurationError();
-  }
-
-  /* istanbul ignore next */
-  if (!config.logger.disabled) {
-    logger.log("Valid configuration, continuing...");
   }
 
   return config;

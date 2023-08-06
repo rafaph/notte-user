@@ -1,18 +1,30 @@
-import { INestApplication, ValidationPipe } from "@nestjs/common";
+import { INestMicroservice, ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
+import { Transport, TcpOptions } from "@nestjs/microservices";
 import { Logger } from "nestjs-pino";
 
 import { AppModule } from "@/app.module";
 import { AppConfig } from "@/config";
+import { appConfigFactory } from "@/factories";
+import { HttpExceptionFilter } from "@/infrastructure/tcp/exception-filters";
+import { RpcResponseInterceptor } from "@/infrastructure/tcp/interceptors";
 
 export class App {
-  protected app!: INestApplication;
+  protected app!: INestMicroservice;
+  protected config!: AppConfig;
 
   /* istanbul ignore next */
   protected async init(): Promise<void> {
-    this.app = await NestFactory.create(AppModule, {
+    this.config = appConfigFactory();
+    this.app = await NestFactory.createMicroservice<TcpOptions>(AppModule, {
       bufferLogs: true,
+      transport: Transport.TCP,
+      options: {
+        host: this.config.host,
+        port: parseInt(this.config.port, 10),
+      },
     });
+
     this.configure();
   }
 
@@ -24,17 +36,15 @@ export class App {
         forbidUnknownValues: true,
       }),
     );
-    this.app.enableVersioning();
-    this.app.setGlobalPrefix("api");
+    this.app.useGlobalFilters(new HttpExceptionFilter());
+    this.app.useGlobalInterceptors(new RpcResponseInterceptor());
   }
 
   /* istanbul ignore next */
   public async listen(): Promise<void> {
+    await this.app.listen();
     const logger = this.app.get(Logger);
-    const { port } = this.app.get(AppConfig);
-    await this.app.listen(port, () => {
-      logger.log(`Listening on port ${port}`, "Bootstrap");
-    });
+    logger.log(`Listening at tcp://${this.config.host}:${this.config.port}`);
   }
 
   /* istanbul ignore next */

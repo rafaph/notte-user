@@ -27,12 +27,6 @@ import {
   knexModuleFactory,
   loggerModuleFactory,
 } from "@/factories";
-import {
-  CreateUserController,
-  DeleteUserController,
-  LoginController,
-  UpdateUserController,
-} from "@/infrastructure/http/controllers";
 import { JwtAuthGuard } from "@/infrastructure/http/guards";
 import {
   DbCreateUserRepository,
@@ -45,6 +39,7 @@ import {
   Argon2PasswordService,
   JwtTokenService,
 } from "@/infrastructure/services";
+import { CreateUserController } from "@/infrastructure/tcp/controllers";
 
 const Repositories: Provider[] = [
   {
@@ -111,12 +106,7 @@ const Providers: ModuleMetadata["providers"] = [
   ...Handlers,
 ];
 
-const Controllers: ModuleMetadata["controllers"] = [
-  CreateUserController,
-  LoginController,
-  UpdateUserController,
-  DeleteUserController,
-];
+const Controllers: ModuleMetadata["controllers"] = [CreateUserController];
 
 @Global()
 @Module({
