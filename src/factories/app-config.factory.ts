@@ -26,12 +26,6 @@ export function appConfigFactory(): AppConfig {
         max: process.env.DATABASE_POOL_MAX,
       },
     },
-    jwt: {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-      algorithm: process.env.JWT_ALGORITHM,
-      publicKey: process.env.JWT_PUBLIC_KEY,
-      privateKey: process.env.JWT_PRIVATE_KEY,
-    },
     argon2: {
       secret: process.env.ARGON2_SECRET,
     },

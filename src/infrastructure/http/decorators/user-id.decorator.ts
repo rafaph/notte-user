@@ -1,8 +1,4 @@
-import { createParamDecorator, ExecutionContext } from "@nestjs/common";
+import { Param, ParseUUIDPipe } from "@nestjs/common";
 
-export const UserId = createParamDecorator(
-  (_: unknown, ctx: ExecutionContext) => {
-    const { userId } = ctx.switchToHttp().getRequest<{ userId: string }>();
-    return userId;
-  },
-);
+export const UserId = () =>
+  Param("userId", new ParseUUIDPipe({ version: "4" }));

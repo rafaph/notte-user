@@ -4,7 +4,6 @@ import { IsIn, IsIP, IsPort, ValidateNested } from "class-validator";
 
 import { Argon2Config } from "@/config/argon2.config";
 import { DatabaseConfig } from "@/config/database.config";
-import { JwtConfig } from "@/config/jwt.config";
 import { LoggerConfig } from "@/config/logger.config";
 
 @Injectable()
@@ -25,10 +24,6 @@ export class AppConfig {
   @ValidateNested()
   @Type(() => DatabaseConfig)
   public readonly database!: DatabaseConfig;
-
-  @ValidateNested()
-  @Type(() => JwtConfig)
-  public readonly jwt!: JwtConfig;
 
   @ValidateNested()
   @Type(() => Argon2Config)

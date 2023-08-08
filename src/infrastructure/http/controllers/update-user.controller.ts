@@ -4,17 +4,15 @@ import {
   Controller,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
   Patch,
   Version,
-  UseGuards,
-  NotFoundException,
 } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
 
 import { UpdateUserCommand } from "@/application/commands";
 import { EmailAlreadyInUseError, UserNotFoundError } from "@/domain/errors";
 import { UserId } from "@/infrastructure/http/decorators";
-import { JwtAuthGuard } from "@/infrastructure/http/guards";
 import { UpdateUserRequest } from "@/infrastructure/http/requests";
 
 @Controller("user")
@@ -23,9 +21,8 @@ export class UpdateUserController {
 
   public constructor(private readonly commandBus: CommandBus) {}
 
-  @UseGuards(JwtAuthGuard)
   @Version("1")
-  @Patch()
+  @Patch(":userId")
   public async handle(
     @UserId() userId: string,
     @Body() request: UpdateUserRequest,

@@ -5,7 +5,7 @@ import { HttpStatus, INestApplication } from "@nestjs/common";
 import { omit } from "lodash";
 import * as request from "supertest";
 
-import { PasswordService, TokenService } from "@/application/services";
+import { PasswordService } from "@/application/services";
 
 import { UpdateUserRequestBuilder, UserBuilder } from "@test/builders";
 import { TestApp, TestUtils } from "@test/helpers";
@@ -16,14 +16,13 @@ import {
 
 function makeRequest(
   app: INestApplication<Server>,
-  token: string,
+  userId: string,
   body: { [key: string]: unknown },
 ): Promise<request.Response> {
   const server = app.getHttpServer();
 
   return request(server)
-    .patch("/api/v1/user")
-    .set("Authorization", `Bearer ${token}`)
+    .patch(`/api/v1/user/${userId}`)
     .set("Content-Type", "application/json")
     .send(body);
 }
@@ -34,14 +33,12 @@ describe("PATCH /api/v1/user", () => {
       // given
       const user = new UserBuilder().build();
       const { knex } = app.get(TestUtils);
-      const tokenService = app.get(TokenService);
       const passwordService = app.get(PasswordService);
       await insertUser(knex, user);
-      const token = await tokenService.sign(user.id);
       const request = new UpdateUserRequestBuilder().build();
 
       // when
-      const response = await makeRequest(app, token, request);
+      const response = await makeRequest(app, user.id, request);
 
       // then
       expect(response.status).toEqual(HttpStatus.OK);
@@ -62,9 +59,7 @@ describe("PATCH /api/v1/user", () => {
       // given
       const user = new UserBuilder().build();
       const { knex } = app.get(TestUtils);
-      const tokenService = app.get(TokenService);
       await insertUser(knex, user);
-      const token = await tokenService.sign(user.id);
       const request = new UpdateUserRequestBuilder()
         .withPassword()
         .withPasswordConfirmation()
@@ -72,7 +67,7 @@ describe("PATCH /api/v1/user", () => {
         .build();
 
       // when
-      const response = await makeRequest(app, token, request);
+      const response = await makeRequest(app, user.id, request);
 
       // then
       expect(response.status).toEqual(HttpStatus.OK);
@@ -85,14 +80,12 @@ describe("PATCH /api/v1/user", () => {
     await new TestApp().run(async (app) => {
       // given
       const user = new UserBuilder().build();
-      const tokenService = app.get(TokenService);
-      const token = await tokenService.sign(user.id);
       const request = new UpdateUserRequestBuilder()
         .withPasswordConfirmation(faker.internet.password())
         .build();
 
       // when
-      const response = await makeRequest(app, token, request);
+      const response = await makeRequest(app, user.id, request);
 
       // then
       expect(response.status).toEqual(HttpStatus.BAD_REQUEST);
@@ -103,28 +96,24 @@ describe("PATCH /api/v1/user", () => {
     await new TestApp().run(async (app) => {
       // given
       const user = new UserBuilder().build();
-      const tokenService = app.get(TokenService);
-      const token = await tokenService.sign(user.id);
       const request = {};
 
       // when
-      const response = await makeRequest(app, token, request);
+      const response = await makeRequest(app, user.id, request);
 
       // then
       expect(response.status).toEqual(HttpStatus.BAD_REQUEST);
     });
   });
 
-  it("should response NOT_FOUND user in token is not found", async () => {
+  it("should response NOT_FOUND user is not found", async () => {
     await new TestApp().run(async (app) => {
       // given
       const user = new UserBuilder().build();
-      const tokenService = app.get(TokenService);
-      const token = await tokenService.sign(user.id);
       const request = new UpdateUserRequestBuilder().build();
 
       // when
-      const response = await makeRequest(app, token, request);
+      const response = await makeRequest(app, user.id, request);
 
       // then
       expect(response.status).toEqual(HttpStatus.NOT_FOUND);
@@ -139,12 +128,10 @@ describe("PATCH /api/v1/user", () => {
       const { knex } = app.get(TestUtils);
       await insertUser(knex, user);
       await insertUser(knex, new UserBuilder().withEmail(email).build());
-      const tokenService = app.get(TokenService);
-      const token = await tokenService.sign(user.id);
       const request = new UpdateUserRequestBuilder().withEmail(email).build();
 
       // when
-      const response = await makeRequest(app, token, request);
+      const response = await makeRequest(app, user.id, request);
 
       // then
       expect(response.status).toEqual(HttpStatus.CONFLICT);
@@ -159,12 +146,10 @@ describe("PATCH /api/v1/user", () => {
       jest.spyOn(knex, "select").mockImplementationOnce(() => {
         throw new Error();
       });
-      const tokenService = app.get(TokenService);
-      const token = await tokenService.sign(user.id);
       const request = new UpdateUserRequestBuilder().build();
 
       // when
-      const response = await makeRequest(app, token, request);
+      const response = await makeRequest(app, user.id, request);
 
       // then
       expect(response.status).toEqual(HttpStatus.INTERNAL_SERVER_ERROR);

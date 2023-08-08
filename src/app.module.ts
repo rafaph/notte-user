@@ -8,12 +8,9 @@ import {
   CreateUserCommandHandler,
   DeleteUserCommandHandler,
   UpdateUserCommandHandler,
+  VerifyUserCommandHandler,
 } from "@/application/handlers/commands";
-import {
-  LoginQueryHandler,
-  VerifyTokenQueryHandler,
-} from "@/application/handlers/queries";
-import { PasswordService, TokenService } from "@/application/services";
+import { PasswordService } from "@/application/services";
 import { AppConfig } from "@/config";
 import {
   CreateUserRepository,
@@ -30,10 +27,9 @@ import {
 import {
   CreateUserController,
   DeleteUserController,
-  LoginController,
+  VerifyUserController,
   UpdateUserController,
 } from "@/infrastructure/http/controllers";
-import { JwtAuthGuard } from "@/infrastructure/http/guards";
 import {
   DbCreateUserRepository,
   DbDeleteUserRepository,
@@ -41,10 +37,7 @@ import {
   DbFindUserByIdRepository,
   DbUpdateUserRepository,
 } from "@/infrastructure/repositories";
-import {
-  Argon2PasswordService,
-  JwtTokenService,
-} from "@/infrastructure/services";
+import { Argon2PasswordService } from "@/infrastructure/services";
 
 const Repositories: Provider[] = [
   {
@@ -71,8 +64,7 @@ const Repositories: Provider[] = [
 
 const Handlers: Provider[] = [
   CreateUserCommandHandler,
-  LoginQueryHandler,
-  VerifyTokenQueryHandler,
+  VerifyUserCommandHandler,
   UpdateUserCommandHandler,
   DeleteUserCommandHandler,
 ];
@@ -81,10 +73,6 @@ const Services: Provider[] = [
   {
     provide: PasswordService,
     useClass: Argon2PasswordService,
-  },
-  {
-    provide: TokenService,
-    useClass: JwtTokenService,
   },
 ];
 
@@ -105,7 +93,6 @@ const Providers: ModuleMetadata["providers"] = [
     provide: AppConfig,
     useFactory: appConfigFactory,
   },
-  JwtAuthGuard,
   ...Repositories,
   ...Services,
   ...Handlers,
@@ -113,7 +100,7 @@ const Providers: ModuleMetadata["providers"] = [
 
 const Controllers: ModuleMetadata["controllers"] = [
   CreateUserController,
-  LoginController,
+  VerifyUserController,
   UpdateUserController,
   DeleteUserController,
 ];

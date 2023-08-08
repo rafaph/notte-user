@@ -2,12 +2,12 @@ import { Server } from "http";
 
 import { faker } from "@faker-js/faker";
 import { HttpStatus, INestApplication } from "@nestjs/common";
-import { QueryBus } from "@nestjs/cqrs";
+import { CommandBus } from "@nestjs/cqrs";
 import * as request from "supertest";
 
 import { PasswordService } from "@/application/services";
 
-import { LoginRequestBuilder, UserBuilder } from "@test/builders";
+import { UserBuilder, VerifyUserRequestBuilder } from "@test/builders";
 import { TestApp, TestUtils } from "@test/helpers";
 import { insertUser } from "@test/infrastructure/repositories/helpers";
 
@@ -18,13 +18,13 @@ function makeRequest(
   const server = app.getHttpServer();
 
   return request(server)
-    .post("/api/v1/user/login")
+    .post("/api/v1/user/verify")
     .set("Content-Type", "application/json")
     .send(body);
 }
 
-describe("POST /api/v1/user/login", () => {
-  it("should response OK", async () => {
+describe("POST /api/v1/user/verify", () => {
+  it("should response OK when user is verified", async () => {
     await new TestApp().run(async (app) => {
       // given
       const { knex } = app.get(TestUtils);
@@ -33,7 +33,7 @@ describe("POST /api/v1/user/login", () => {
       const hashedPassword = await passwordService.hash(password);
       const user = new UserBuilder().withPassword(hashedPassword).build();
       await insertUser(knex, user);
-      const request = new LoginRequestBuilder()
+      const request = new VerifyUserRequestBuilder()
         .withEmail(user.email)
         .withPassword(password)
         .build();
@@ -43,7 +43,6 @@ describe("POST /api/v1/user/login", () => {
 
       // then
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body).toHaveProperty("token");
     });
   });
 
@@ -60,7 +59,7 @@ describe("POST /api/v1/user/login", () => {
   it("should response UNAUTHORIZED when user is not found", async () => {
     await new TestApp().run(async (app) => {
       // given
-      const request = new LoginRequestBuilder().build();
+      const request = new VerifyUserRequestBuilder().build();
 
       // when
       const response = await makeRequest(app, request);
@@ -80,7 +79,9 @@ describe("POST /api/v1/user/login", () => {
       );
       const user = new UserBuilder().withPassword(hashedPassword).build();
       await insertUser(knex, user);
-      const request = new LoginRequestBuilder().withEmail(user.email).build();
+      const request = new VerifyUserRequestBuilder()
+        .withEmail(user.email)
+        .build();
 
       // when
       const response = await makeRequest(app, request);
@@ -93,9 +94,9 @@ describe("POST /api/v1/user/login", () => {
   it("should response INTERNAL_SERVER_ERROR", async () => {
     await new TestApp().run(async (app) => {
       // given
-      const request = new LoginRequestBuilder().build();
+      const request = new VerifyUserRequestBuilder().build();
       jest
-        .spyOn(app.get(QueryBus), "execute")
+        .spyOn(app.get(CommandBus), "execute")
         .mockRejectedValueOnce(new Error());
 
       // when

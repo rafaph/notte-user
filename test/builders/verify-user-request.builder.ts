@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
 
-import { LoginRequest } from "@/infrastructure/http/requests";
+import { VerifyUserRequest } from "@/infrastructure/http/requests";
 
-export type Request = Omit<LoginRequest, "toQuery">;
+export type Request = Omit<VerifyUserRequest, "toCommand">;
 
-export class LoginRequestBuilder {
+export class VerifyUserRequestBuilder {
   private readonly props: Request;
 
   public constructor() {
@@ -14,12 +14,12 @@ export class LoginRequestBuilder {
     };
   }
 
-  public withEmail(email: string): LoginRequestBuilder {
+  public withEmail(email: string): VerifyUserRequestBuilder {
     this.props.email = email;
     return this;
   }
 
-  public withPassword(password: string): LoginRequestBuilder {
+  public withPassword(password: string): VerifyUserRequestBuilder {
     this.props.password = password;
     return this;
   }

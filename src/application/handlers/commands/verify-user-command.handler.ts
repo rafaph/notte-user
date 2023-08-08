@@ -1,30 +1,31 @@
 import { Logger } from "@nestjs/common";
-import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { Option } from "oxide.ts";
 
-import { LoginQuery } from "@/application/queries";
-import { LoginResult } from "@/application/queries/results";
-import { PasswordService, TokenService } from "@/application/services";
-import { InvalidCredentialsError, LoginError } from "@/domain/errors";
+import { VerifyUserCommand } from "@/application/commands";
+import { PasswordService } from "@/application/services";
+import {
+  InvalidCredentialsError,
+  UserVerificationError,
+} from "@/domain/errors";
 import { User } from "@/domain/models";
 import { FindUserByEmailRepository } from "@/domain/repositories";
 
-@QueryHandler(LoginQuery)
-export class LoginQueryHandler
-  implements IQueryHandler<LoginQuery, LoginResult>
+@CommandHandler(VerifyUserCommand)
+export class VerifyUserCommandHandler
+  implements ICommandHandler<VerifyUserCommand>
 {
-  private readonly logger = new Logger(LoginQueryHandler.name);
+  private readonly logger = new Logger(VerifyUserCommandHandler.name);
 
   public constructor(
     private readonly findUserByEmailRepository: FindUserByEmailRepository,
     private readonly passwordService: PasswordService,
-    private readonly tokenService: TokenService,
   ) {}
 
   private handleError(message: string, error: unknown): never {
     this.logger.error(message, error);
 
-    throw new LoginError();
+    throw new UserVerificationError();
   }
 
   private async getUser(email: string): Promise<Option<User>> {
@@ -49,15 +50,7 @@ export class LoginQueryHandler
     }
   }
 
-  private async createToken(id: string): Promise<string> {
-    try {
-      return await this.tokenService.sign(id);
-    } catch (error) {
-      this.handleError("Fail to sign id to token", error);
-    }
-  }
-
-  public async execute({ email, password }: LoginQuery): Promise<LoginResult> {
+  public async execute({ email, password }: VerifyUserCommand): Promise<void> {
     const userOption = await this.getUser(email);
 
     if (userOption.isNone()) {
@@ -73,9 +66,5 @@ export class LoginQueryHandler
     if (!isPasswordCorrect) {
       throw new InvalidCredentialsError();
     }
-
-    const token = await this.createToken(user.id);
-
-    return { token };
   }
 }

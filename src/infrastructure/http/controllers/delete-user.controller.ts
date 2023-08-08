@@ -1,16 +1,16 @@
 import {
   Controller,
   Delete,
+  HttpCode,
+  HttpStatus,
   InternalServerErrorException,
   Logger,
-  UseGuards,
   Version,
 } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
 
 import { DeleteUserCommand } from "@/application/commands";
 import { UserId } from "@/infrastructure/http/decorators";
-import { JwtAuthGuard } from "@/infrastructure/http/guards";
 
 @Controller("user")
 export class DeleteUserController {
@@ -18,11 +18,12 @@ export class DeleteUserController {
 
   public constructor(private readonly commandBus: CommandBus) {}
 
-  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Version("1")
-  @Delete()
+  @Delete(":userId")
   public async handle(@UserId() userId: string): Promise<void> {
     const command = new DeleteUserCommand(userId);
+
     try {
       await this.commandBus.execute<DeleteUserCommand>(command);
     } catch (error) {
