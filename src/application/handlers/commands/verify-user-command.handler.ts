@@ -1,6 +1,5 @@
 import { Logger } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Option } from "oxide.ts";
 
 import { VerifyUserCommand } from "@/application/commands";
 import { PasswordService } from "@/application/services";
@@ -28,7 +27,7 @@ export class VerifyUserCommandHandler
     throw new UserVerificationError();
   }
 
-  private async getUser(email: string): Promise<Option<User>> {
+  private async getUser(email: string): Promise<User | null> {
     try {
       return await this.findUserByEmailRepository.findByEmail(email);
     } catch (error) {
@@ -51,13 +50,12 @@ export class VerifyUserCommandHandler
   }
 
   public async execute({ email, password }: VerifyUserCommand): Promise<void> {
-    const userOption = await this.getUser(email);
+    const user = await this.getUser(email);
 
-    if (userOption.isNone()) {
+    if (user === null) {
       throw new InvalidCredentialsError();
     }
 
-    const user = userOption.unwrap();
     const isPasswordCorrect = await this.verifyPassword(
       user.password,
       password,

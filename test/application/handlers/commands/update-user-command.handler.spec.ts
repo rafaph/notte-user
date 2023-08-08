@@ -1,5 +1,4 @@
 import { omit } from "lodash";
-import { Some } from "oxide.ts";
 
 import { UpdateUserCommandHandler } from "@/application/handlers/commands";
 import { PasswordService } from "@/application/services";
@@ -63,7 +62,7 @@ describe(UpdateUserCommandHandler.name, () => {
       deps;
     jest
       .spyOn(findUserByIdRepository, "findById")
-      .mockResolvedValueOnce(Some(new User(user)));
+      .mockResolvedValueOnce(new User(user));
     const updateSpy = jest.spyOn(updateUserRepository, "update");
     user.update({
       ...command.userProps,
@@ -91,7 +90,7 @@ describe(UpdateUserCommandHandler.name, () => {
     const { findUserByIdRepository, updateUserRepository } = deps;
     jest
       .spyOn(findUserByIdRepository, "findById")
-      .mockResolvedValueOnce(Some(new User(user)));
+      .mockResolvedValueOnce(new User(user));
     const updateSpy = jest.spyOn(updateUserRepository, "update");
     user.update(command.userProps);
 
@@ -125,10 +124,10 @@ describe(UpdateUserCommandHandler.name, () => {
     const { findUserByIdRepository, findUserByEmailRepository } = deps;
     jest
       .spyOn(findUserByIdRepository, "findById")
-      .mockResolvedValueOnce(Some(new User(user)));
+      .mockResolvedValueOnce(new User(user));
     jest
       .spyOn(findUserByEmailRepository, "findByEmail")
-      .mockResolvedValueOnce(Some(new User(user)));
+      .mockResolvedValueOnce(new User(user));
 
     // when
     const executePromise = sut.execute(command);
@@ -162,7 +161,7 @@ describe(UpdateUserCommandHandler.name, () => {
     const { findUserByIdRepository, findUserByEmailRepository } = deps;
     jest
       .spyOn(findUserByIdRepository, "findById")
-      .mockResolvedValueOnce(Some(new User(user)));
+      .mockResolvedValueOnce(new User(user));
     jest
       .spyOn(findUserByEmailRepository, "findByEmail")
       .mockRejectedValueOnce(new Error());
@@ -182,7 +181,7 @@ describe(UpdateUserCommandHandler.name, () => {
     const { findUserByIdRepository, passwordService } = deps;
     jest
       .spyOn(findUserByIdRepository, "findById")
-      .mockResolvedValueOnce(Some(new User(user)));
+      .mockResolvedValueOnce(new User(user));
     jest.spyOn(passwordService, "hash").mockRejectedValueOnce(new Error());
 
     // when
@@ -200,7 +199,7 @@ describe(UpdateUserCommandHandler.name, () => {
     const { findUserByIdRepository, updateUserRepository } = deps;
     jest
       .spyOn(findUserByIdRepository, "findById")
-      .mockResolvedValueOnce(Some(new User(user)));
+      .mockResolvedValueOnce(new User(user));
     jest
       .spyOn(updateUserRepository, "update")
       .mockRejectedValueOnce(new Error());

@@ -1,5 +1,4 @@
 import { faker } from "@faker-js/faker";
-import { Some } from "oxide.ts";
 
 import { VerifyUserCommand } from "@/application/commands";
 import { VerifyUserCommandHandler } from "@/application/handlers/commands";
@@ -53,7 +52,7 @@ describe(VerifyUserCommandHandler.name, () => {
     const command = new VerifyUserCommand(email, password);
     jest
       .spyOn(findUserByEmailRepository, "findByEmail")
-      .mockResolvedValueOnce(Some(user));
+      .mockResolvedValueOnce(user);
 
     // when
     const executePromise = sut.execute(command);
@@ -90,7 +89,7 @@ describe(VerifyUserCommandHandler.name, () => {
     const command = new VerifyUserCommand(email, password);
     jest
       .spyOn(findUserByEmailRepository, "findByEmail")
-      .mockResolvedValueOnce(Some(user));
+      .mockResolvedValueOnce(user);
 
     // when
     const executePromise = sut.execute(command);
@@ -125,7 +124,7 @@ describe(VerifyUserCommandHandler.name, () => {
     const command = new VerifyUserCommand(user.email, user.password);
     jest
       .spyOn(findUserByEmailRepository, "findByEmail")
-      .mockResolvedValueOnce(Some(user));
+      .mockResolvedValueOnce(user);
     jest.spyOn(passwordService, "verify").mockRejectedValueOnce(new Error());
 
     // when

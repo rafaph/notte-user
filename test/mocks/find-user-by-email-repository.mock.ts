@@ -1,14 +1,12 @@
-import { None, Option } from "oxide.ts";
-
 import { User } from "@/domain/models";
 import { FindUserByEmailRepository } from "@/domain/repositories";
 
 export class FindUserByEmailRepositoryMock
   implements FindUserByEmailRepository
 {
-  public constructor(private readonly returnedUser: Option<User> = None) {}
+  public constructor(private readonly returnedUser: User | null = null) {}
 
-  public async findByEmail(): Promise<Option<User>> {
+  public async findByEmail(): Promise<User | null> {
     return this.returnedUser;
   }
 }

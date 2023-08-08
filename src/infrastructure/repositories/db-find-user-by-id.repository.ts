@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Knex } from "knex";
 import { InjectConnection } from "nest-knexjs";
-import { None, Option, Some } from "oxide.ts";
 
 import { User, UserProps } from "@/domain/models";
 import { FindUserByIdRepository } from "@/domain/repositories";
@@ -10,19 +9,18 @@ import { FindUserByIdRepository } from "@/domain/repositories";
 export class DbFindUserByIdRepository implements FindUserByIdRepository {
   public constructor(@InjectConnection() private readonly knex: Knex) {}
 
-  public async findById(id: string): Promise<Option<User>> {
+  public async findById(id: string): Promise<User | null> {
     const rows = await this.knex
       .select("*")
       .from("users")
       .where<UserProps[]>("id", id);
 
     if (rows.length === 0) {
-      return None;
+      return null;
     }
 
     const [userProps] = rows;
-    const user = new User(userProps);
 
-    return Some(user);
+    return new User(userProps);
   }
 }

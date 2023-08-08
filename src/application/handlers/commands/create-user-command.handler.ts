@@ -30,10 +30,8 @@ export class CreateUserCommandHandler
 
   private async checkEmailInUse(email: string): Promise<boolean> {
     try {
-      const userOption = await this.findUserByEmailRepository.findByEmail(
-        email,
-      );
-      return userOption.isSome();
+      const user = await this.findUserByEmailRepository.findByEmail(email);
+      return user !== null;
     } catch (error) {
       this.handleError("Fail to check if user email is already in use", error);
     }

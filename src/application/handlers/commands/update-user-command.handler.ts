@@ -1,7 +1,6 @@
 import { Logger } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { omit } from "lodash";
-import { Option } from "oxide.ts";
 
 import { UpdateUserCommand } from "@/application/commands";
 import { PasswordService } from "@/application/services";
@@ -44,7 +43,7 @@ export class UpdateUserCommandHandler
     }
   }
 
-  private async findUserById(id: string): Promise<Option<User>> {
+  private async findUserById(id: string): Promise<User | null> {
     try {
       return await this.findUserByIdRepository.findById(id);
     } catch (error) {
@@ -69,23 +68,22 @@ export class UpdateUserCommandHandler
     }
 
     try {
-      const userOption = await this.findUserByEmailRepository.findByEmail(
+      const user = await this.findUserByEmailRepository.findByEmail(
         userProps.email,
       );
-      return userOption.isNone();
+      return user === null;
     } catch (error) {
       this.handleError("Fail to check if user email is already in use", error);
     }
   }
 
   public async execute({ userProps }: UpdateUserCommand): Promise<void> {
-    const userOption = await this.findUserById(userProps.id);
+    const user = await this.findUserById(userProps.id);
 
-    if (userOption.isNone()) {
+    if (user === null) {
       throw new UserNotFoundError();
     }
 
-    const user = userOption.unwrap();
     const canUpdateEmail = await this.canUpdateEmail(user, userProps);
 
     if (!canUpdateEmail) {

@@ -1,5 +1,3 @@
-import { Some } from "oxide.ts";
-
 import { CreateUserCommandHandler } from "@/application/handlers/commands";
 import { PasswordService } from "@/application/services";
 import { EmailAlreadyInUseError, UserCreationError } from "@/domain/errors";
@@ -65,7 +63,7 @@ describe(CreateUserCommandHandler.name, () => {
     const user = new UserBuilder().build();
     jest
       .spyOn(findUserByEmailRepository, "findByEmail")
-      .mockResolvedValueOnce(Some(user));
+      .mockResolvedValueOnce(user);
 
     // when
     const execute = sut.execute(command);

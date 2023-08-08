@@ -15,10 +15,10 @@ describe(DbFindUserByEmailRepository.name, () => {
       await insertUser(knex, user);
 
       // when
-      const userOption = await sut.findByEmail(user.email);
+      const userResult = await sut.findByEmail(user.email);
 
       // then
-      expect(userOption.isSome()).toBeTruthy();
+      expect(userResult).toBeTruthy();
     });
   });
 
@@ -29,10 +29,10 @@ describe(DbFindUserByEmailRepository.name, () => {
       const email = faker.internet.email();
 
       // when
-      const userOption = await sut.findByEmail(email);
+      const userResult = await sut.findByEmail(email);
 
       // then
-      expect(userOption.isNone()).toBeTruthy();
+      expect(userResult).toBeFalsy();
     });
   });
 });

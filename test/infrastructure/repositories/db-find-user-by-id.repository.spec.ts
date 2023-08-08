@@ -15,10 +15,10 @@ describe(DbFindUserByIdRepository.name, () => {
       await insertUser(knex, user);
 
       // when
-      const userOption = await sut.findById(user.id);
+      const userResult = await sut.findById(user.id);
 
       // then
-      expect(userOption.isSome()).toBeTruthy();
+      expect(userResult).toBeTruthy();
     });
   });
 
@@ -29,10 +29,10 @@ describe(DbFindUserByIdRepository.name, () => {
       const id = faker.string.uuid();
 
       // when
-      const userOption = await sut.findById(id);
+      const userResult = await sut.findById(id);
 
       // then
-      expect(userOption.isNone()).toBeTruthy();
+      expect(userResult).toBeFalsy();
     });
   });
 });
