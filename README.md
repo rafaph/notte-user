@@ -2,8 +2,8 @@
 
 ## User management
 
-- Create, update, and delete a logged User.
-- Login.
+- Create, update, and delete a User.
+- Verify a user by its credentials.
 
 ## Dev
 
