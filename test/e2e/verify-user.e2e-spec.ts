@@ -42,6 +42,7 @@ describe("POST /api/v1/user/verify", () => {
       const response = await makeRequest(app, request);
 
       // then
+      expect(response.body).toEqual({ userId: user.id });
       expect(response.status).toBe(HttpStatus.OK);
     });
   });

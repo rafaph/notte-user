@@ -12,7 +12,7 @@ import { FindUserByEmailRepository } from "@/domain/repositories";
 
 @CommandHandler(VerifyUserCommand)
 export class VerifyUserCommandHandler
-  implements ICommandHandler<VerifyUserCommand>
+  implements ICommandHandler<VerifyUserCommand, string>
 {
   private readonly logger = new Logger(VerifyUserCommandHandler.name);
 
@@ -49,7 +49,10 @@ export class VerifyUserCommandHandler
     }
   }
 
-  public async execute({ email, password }: VerifyUserCommand): Promise<void> {
+  public async execute({
+    email,
+    password,
+  }: VerifyUserCommand): Promise<string> {
     const user = await this.getUser(email);
 
     if (user === null) {
@@ -64,5 +67,7 @@ export class VerifyUserCommandHandler
     if (!isPasswordCorrect) {
       throw new InvalidCredentialsError();
     }
+
+    return user.id;
   }
 }

@@ -14,6 +14,7 @@ import { CommandBus } from "@nestjs/cqrs";
 import { VerifyUserCommand } from "@/application/commands";
 import { InvalidCredentialsError } from "@/domain/errors";
 import { VerifyUserRequest } from "@/infrastructure/http/requests";
+import { VerifyUserResponse } from "@/infrastructure/http/responses";
 
 @Controller("user")
 export class VerifyUserController {
@@ -24,11 +25,17 @@ export class VerifyUserController {
   @HttpCode(HttpStatus.OK)
   @Version("1")
   @Post("verify")
-  public async handle(@Body() request: VerifyUserRequest): Promise<void> {
+  public async handle(
+    @Body() request: VerifyUserRequest,
+  ): Promise<VerifyUserResponse> {
     const command = request.toCommand();
 
     try {
-      await this.commandBus.execute<VerifyUserCommand>(command);
+      const userId = await this.commandBus.execute<VerifyUserCommand, string>(
+        command,
+      );
+
+      return new VerifyUserResponse(userId);
     } catch (error) {
       if (error instanceof InvalidCredentialsError) {
         throw new UnauthorizedException();

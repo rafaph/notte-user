@@ -55,10 +55,10 @@ describe(VerifyUserCommandHandler.name, () => {
       .mockResolvedValueOnce(user);
 
     // when
-    const executePromise = sut.execute(command);
+    const userId = await sut.execute(command);
 
     // then
-    await expect(executePromise).resolves.toBeUndefined();
+    expect(userId).toEqual(user.id);
   });
 
   it("should throw an InvalidCredentialsError when user is not found", async () => {
