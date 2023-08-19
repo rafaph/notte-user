@@ -57,7 +57,7 @@ describe("POST /api/v1/user/verify", () => {
     });
   });
 
-  it("should response UNAUTHORIZED when user is not found", async () => {
+  it("should response NOT_FOUND when user is not found", async () => {
     await new TestApp().run(async (app) => {
       // given
       const request = new VerifyUserRequestBuilder().build();
@@ -66,11 +66,11 @@ describe("POST /api/v1/user/verify", () => {
       const response = await makeRequest(app, request);
 
       // then
-      expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
+      expect(response.status).toBe(HttpStatus.NOT_FOUND);
     });
   });
 
-  it("should response UNAUTHORIZED when password is not correct", async () => {
+  it("should response NOT_FOUND when password is not correct", async () => {
     await new TestApp().run(async (app) => {
       // given
       const { knex } = app.get(TestUtils);
@@ -88,7 +88,7 @@ describe("POST /api/v1/user/verify", () => {
       const response = await makeRequest(app, request);
 
       // then
-      expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
+      expect(response.status).toBe(HttpStatus.NOT_FOUND);
     });
   });
 

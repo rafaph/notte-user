@@ -5,8 +5,8 @@ import {
   HttpStatus,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
   Post,
-  UnauthorizedException,
   Version,
 } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
@@ -38,7 +38,7 @@ export class VerifyUserController {
       return new VerifyUserResponse(userId);
     } catch (error) {
       if (error instanceof InvalidCredentialsError) {
-        throw new UnauthorizedException();
+        throw new NotFoundException();
       }
 
       this.logger.error("Fail to verify an user", error);
